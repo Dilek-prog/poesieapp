@@ -1,0 +1,23 @@
+{
+  "name": "poesieapp",
+  "version": "1.0.0",
+  "description": "Eine App für Poesie",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "keywords": [
+    "pwa",
+    "progressive",
+    "web",
+    "app",
+    "ikt",
+    "htw",
+    "fiw"
+  ],
+  "author": "Dilek Ogur",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.0"
+  }
+}
