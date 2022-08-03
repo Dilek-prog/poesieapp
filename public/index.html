@@ -33,6 +33,11 @@
               Benachrichtigungen Ein
             </button>
           </div>
+          <div class="drawer-option">
+            <button id="install1" style="display:none;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent installButton">
+              Installieren
+            </button>
+          </div>
         </nav>
       </div>
     </header>
@@ -44,6 +49,11 @@
         <div class="drawer-option">
           <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
             Benachrichtigungen Ein
+          </button>
+        </div>
+        <div class="drawer-option">
+          <button id="install2" style="display:none;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent installButton">
+            Installieren
           </button>
         </div>
       </nav>
@@ -105,6 +115,40 @@
       navigator.serviceWorker.register('/sw.js');
   });
   }
+</script>
+
+<script>
+  const installButton1 = document.getElementById('install1');
+  const installButton2 = document.getElementById('install2');
+  console.log('installButton', installButton1)
+  console.log('installButton', installButton2)
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', evt => {
+    console.log(evt.platforms); // e.g., ["web", "android", "windows"]
+    evt.preventDefault();
+    deferredPrompt = evt;
+    installButton1.style.display = 'block';
+    installButton2.style.display = 'block';
+  })
+
+  installButton1.addEventListener('click', async () => {
+    await deferredPrompt.prompt();
+    const choiceResult = await deferredPrompt.userChoice;
+    console.log(choiceResult.outcome);
+  });
+
+  installButton2.addEventListener('click', async () => {
+    await deferredPrompt.prompt();
+    const choiceResult = await deferredPrompt.userChoice;
+    console.log(choiceResult.outcome);
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installButton1.style.display = 'none';
+    installButton2.style.display = 'none';
+  })
+
 </script>
 
 </body>
