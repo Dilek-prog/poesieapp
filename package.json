@@ -19,5 +19,8 @@
   "license": "ISC",
   "devDependencies": {
     "http-server": "^14.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.0"
   }
 }
