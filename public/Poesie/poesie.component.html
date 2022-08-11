@@ -1,0 +1,31 @@
+<div class="header">
+    <h1><b>Poesie</b></h1>
+    <p> Leben  &amp; Leben lassen &clubs;</p>
+  </div>
+
+<div *ngIf="!deleted" id="alles" class="row row-cols-1 row-cols-md-3 g-4" >
+    <div class="col" *ngFor="let poesies of poesies; ">
+      
+        <div class="card-body">
+          
+              <!-- <li class="list-group-item"><span class="text-black-50">Bild: </span>{{ poesies.bild }}</li> -->  
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span class="text-black-50">Titel: </span>{{ poesies.title }}</li>
+                <li class="list-group-item"><span type="date" class="text-black-50">Datum: </span>{{ stringAsDate(poesies.datum) | date:'dd.MM.YYYY' }}</li> <!--Richtige Datumsformatierung  -->
+                <li class="list-group-item"><span class="text-black-50">Kategorie: </span>{{ poesies.kategorie }}</li>
+                <li class="list-group-item"><span class="text-black-50">Bild: </span>{{ poesies.bild }}</li>
+                <textarea rows="7">{{ poesies.text }}</textarea>
+                </ul>
+            
+             <div *ngIf="isAdmin" class="form-group row justify-content-end" >
+                <div class="col"> 
+                <button [routerLink]="['/poesie-w', poesies._id]" id="bearbeiten">Bearbeiten</button></div> <!-- routerlink zur poesie-w -->
+                <div class="col">
+                <button type="button" (click)="delete(poesies._id)" id="löschen">Löschen</button> 
+          
+            </div>
+       </div>       
+    </div>
+</div>
+</div>
+

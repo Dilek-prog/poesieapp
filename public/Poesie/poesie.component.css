@@ -1,0 +1,67 @@
+.header{
+    padding: 60px;
+    text-align: center;
+    background: #62b9a8;
+    color: white;
+    margin-top: 50px;
+    font-size: 1.5em;
+   }
+ 
+ h1{
+     font-size: 2.5em;
+     font-family: "Permanent Marker";
+ }
+ 
+ #alles{
+     border:none;
+     padding-top: 6%;
+     margin-left: 5%;
+     margin-right: 5%;
+     padding-bottom: 6%;
+ }
+ 
+ .list-group-item{
+     background-color: transparent;
+     transition: all 0.3s;
+     padding: 13px;
+     margin-bottom: 15px;
+     color:rgb(0, 0, 0);
+     font-family: Helvetica, Arial, sans-serif;
+ }
+ 
+ #bearbeiten{
+     background-color: #62b9a8;
+     border-radius:6px;
+     padding: 4%;
+     margin-left:0;
+     width: 90%;
+     margin-top: 2.5%;
+   }
+ 
+   #bearbeiten:hover {
+     background:#318f7c; 
+   }
+ 
+   #löschen{
+     background:#62b9a8;
+     border-radius:6px;
+     margin-left:10%;
+     padding: 4%;
+     width: 90%;
+     margin-top: 2.5%;
+   }
+ 
+   #löschen:hover {
+     background:#318f7c; 
+   }
+ 
+ .card-body{
+     background-color: rgb(255, 255, 255); 
+     margin-left: 2%;
+     margin-right: 2%;
+     margin-top: 2%;
+     margin-bottom: 2%;
+     box-sizing: border-box;
+     box-shadow: 0 4px 13px 0 rgba(0, 0, 0, 0.2);
+ }
+ 
