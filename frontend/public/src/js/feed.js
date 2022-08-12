@@ -15,7 +15,7 @@ shareImageButton.addEventListener('click', openCreatePostModal);
 
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
-function createCard() {
+function createCard(card) {
   let centerWrapper = document.createElement('div');
   centerWrapper.className = 'card-center-wrapper';
   let cardWrapper = document.createElement('div');
@@ -23,27 +23,38 @@ function createCard() {
   centerWrapper.appendChild(cardWrapper);
   let cardTitle = document.createElement('div');
   cardTitle.className = 'mdl-card__title';
-  cardTitle.style.backgroundImage = 'url("/src/images/1.jpg")';
+  let image = new Image();
+  images.src = card.images._id;
+  cardTitle.style.backgroundImage = 'url('+ images.src +')';
   cardTitle.style.backgroundSize = 'cover';
   cardTitle.style.height = '180px';
   cardWrapper.appendChild(cardTitle);
   let cardTitleTextElement = document.createElement('h2');
   cardTitleTextElement.className = 'mdl-card__title-text';
-  cardTitleTextElement.textContent = 'Vor der HTW-Mensa';
+  cardTitleTextElement.textContent = card.title;
   cardTitle.appendChild(cardTitleTextElement);
   let cardSupportingText = document.createElement('div');
   cardSupportingText.className = 'mdl-card__supporting-text';
-  cardSupportingText.textContent = 'HTW Berlin';
+  cardSupportingText.textContent = card.location;
   cardSupportingText.style.textAlign = 'center';
   cardWrapper.appendChild(cardSupportingText);
   componentHandler.upgradeElement(cardWrapper);
   sharedMomentsArea.appendChild(centerWrapper);
 }
 
-fetch('https://httpbin.org/get')
-    .then(function(res) {
-      return res.json();
+fetch('http://localhost:3000/posts')
+    .then((res) => {
+        return res.json();
     })
-    .then(function(data) {
-      createCard();
+    .then((data) => {
+        updateUI(data);
     });
+
+    function updateUI(data) {
+
+      for(let card of data)
+      {
+         createCard(card);
+      }
+  
+  }
