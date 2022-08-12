@@ -19,7 +19,7 @@ app.listen(PORT, (error) => {
     } else {
         console.log(`server running on http://localhost:${PORT}`);
     }
-});
+})
 
 //connect to mongoDB
 mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
