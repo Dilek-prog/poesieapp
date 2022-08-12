@@ -3,6 +3,7 @@ const router = express.Router();
 const Post = require('../models/posts');
 const upload = require('../middleware/upload');
 require('dotenv').config()
+const mongoose = require('mongoose');
 
 const connect = mongoose.createConnection(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true });
 const collectionFiles = connect.collection('posts.files');
