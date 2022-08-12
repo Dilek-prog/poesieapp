@@ -21,7 +21,7 @@ router.post('/', async(req, res) => {
     res.send(newPost);
 });
 
-// POST one post via id
+// GET one post via id
 router.get('/:id', async(req, res) => {
     try {
         const post = await Post.findOne({ _id: req.params.id });
