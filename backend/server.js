@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const postsRoutes = require('./routes/posts.routes');
 const uploadRoutes = require('./routes/upload.routes');
+const downloadRoute = require('./routes/download.routes');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/posts', postsRoutes);
 app.use('/img', uploadRoutes);
+app.use('/download', downloadRoute);
 
 app.listen(PORT, (error) => {
     if (error) {
