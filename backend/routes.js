@@ -21,4 +21,57 @@ router.post('/posts', async(req, res) => {
     res.send(newPost);
 });
 
+// POST one post via id
+router.get('/posts/:id', async(req, res) => {
+    try {
+        const post = await Post.findOne({ _id: req.params.id });
+        console.log(req.params);
+        res.send(post);
+    } catch {
+        res.status(404);
+        res.send({
+            error: "Post does not exist!"
+        });
+    }
+});
+
+// PATCH (update) one post
+router.patch('/posts/:id', async(req, res) => {
+    try {
+        const post = await Post.findOne({ _id: req.params.id })
+
+        if (req.body.title) {
+            post.title = req.body.title
+        }
+
+        if (req.body.location) {
+            post.location = req.body.location
+        }
+
+        if (req.body.image_id) {
+            post.image_id = req.body.image_id
+        }
+        if (req.body.text) {
+            post.text = req.body.text
+        }
+
+        await Post.updateOne({ _id: req.params.id }, post);
+        res.send(post)
+    } catch {
+        res.status(404)
+        res.send({ error: "Post does not exist!" })
+    }
+});
+
+// DELETE one post via id
+router.delete('/posts/:id', async(req, res) => {
+    try {
+        await Post.deleteOne({ _id: req.params.id })
+        res.status(204).send()
+    } catch {
+        res.status(404)
+        res.send({ error: "Post does not exist!" })
+    }
+});
+
 module.exports = router;
