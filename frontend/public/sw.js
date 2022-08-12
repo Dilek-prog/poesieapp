@@ -7,8 +7,9 @@ workbox.routing.registerRoute(
     new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst()
 )
 
-const CURRENT_STATIC_CACHE = 'static-v2';
-const CURRENT_DYNAMIC_CACHE = 'dynamic-v2';
+const CACH_VERSION = 3;
+const CURRENT_STATIC_CACHE = 'static-v'+CACHE_VERSION;
+const CURRENT_DYNAMIC_CACHE = 'dynamic-v'+CACHE_VERSION;
 
 self.addEventListener('activate', event => {
     console.log('service worker --> activating ...', event);
@@ -16,7 +17,7 @@ self.addEventListener('activate', event => {
         caches.keys()
             .then( keyList => {
                 return Promise.all(keyList.map( key => {
-                    if(key !== 'static-v1' && key !== 'dynamic') {
+                    if(key !== CURRENT_STATIC_CACHE && key !== CURRENT_DYNAMIC_CACHE) {
                         console.log('service worker --> old cache removed :', key);
                         return caches.delete(key);
                     }
@@ -55,7 +56,8 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('fetch', event => {
-    if (!(event.request.url.indexOf('http') === 0)) return;
+    if (!(event.request.url.indexOf('http') !== 0)) return;
+
     event.respondWith(
         caches.match(event.request)
             .then( response => {
