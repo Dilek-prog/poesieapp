@@ -16,8 +16,11 @@ shareImageButton.addEventListener('click', openCreatePostModal);
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
 function createCard() {
+  let centerWrapper = document.createElement('div');
+  centerWrapper.className = 'card-center-wrapper';
   let cardWrapper = document.createElement('div');
   cardWrapper.className = 'shared-moment-card mdl-card mdl-shadow--2dp';
+  centerWrapper.appendChild(cardWrapper);
   let cardTitle = document.createElement('div');
   cardTitle.className = 'mdl-card__title';
   cardTitle.style.backgroundImage = 'url("/src/images/1.jpg")';
@@ -34,7 +37,7 @@ function createCard() {
   cardSupportingText.style.textAlign = 'center';
   cardWrapper.appendChild(cardSupportingText);
   componentHandler.upgradeElement(cardWrapper);
-  sharedMomentsArea.appendChild(cardWrapper);
+  sharedMomentsArea.appendChild(centerWrapper);
 }
 
 fetch('https://httpbin.org/get')
