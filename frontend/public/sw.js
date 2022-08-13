@@ -1,8 +1,10 @@
 
 importScripts('/src/js/idb.js');
+importScripts('/src/js/db.js');
 
-const CURRENT_STATIC_CACHE = 'static-3';
-const CURRENT_DYNAMIC_CACHE = 'dynamic-3';
+const CACHE_VERSION = 1;
+const CURRENT_STATIC_CACHE = 'static-v'+CACHE_VERSION;
+const CURRENT_DYNAMIC_CACHE = 'dynamic-v'+CACHE_VERSION;
 
 self.addEventListener('activate', event => {
     console.log('service worker --> activating ...', event);
@@ -81,13 +83,7 @@ self.addEventListener('fetch', event => {
                         .then( data => {
                             for(let key in data)
                             {
-                                db
-                                    .then( dbPosts => {
-                                        let tx = dbPosts.transaction('posts', 'readwrite');
-                                        let store = tx.objectStore('posts');
-                                        store.put(data[key]);
-                                        return tx.done;
-                                    })
+                                writeData('posts', data[key]);
                             }
                         })
                     return res;
