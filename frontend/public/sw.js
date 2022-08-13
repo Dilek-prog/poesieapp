@@ -1,10 +1,5 @@
 
 importScripts('/src/js/idb.js');
-  
-workbox.routing.registerRoute(
-    ({request}) => request.destination === 'image',
-    new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst()
-)
 
 const CURRENT_STATIC_CACHE = 'static-3';
 const CURRENT_DYNAMIC_CACHE = 'dynamic-3';
@@ -72,13 +67,29 @@ const db = idb.openDB('posts-store', 1, {
 
 
 self.addEventListener('fetch', event => {
-    if (!(event.request.url.indexOf('http') === 0)) return;
+    // check if request is made by chrome extensions or web page
+    // if request is made for web page url must contains http.
+    if (!(event.request.url.indexOf('http') === 0)) return; // skip the request. if request is not made with http protocol
+
     const url = 'http://localhost:3000/posts';
     if(event.request.url.indexOf(url) >= 0) {
         event.respondWith(
             fetch(event.request)
                 .then ( res => {
-                    // hier Anfrage an http://localhost:3000/posts behandeln
+                    const clonedResponse = res.clone();
+                    clonedResponse.json()
+                        .then( data => {
+                            for(let key in data)
+                            {
+                                db
+                                    .then( dbPosts => {
+                                        let tx = dbPosts.transaction('posts', 'readwrite');
+                                        let store = tx.objectStore('posts');
+                                        store.put(data[key]);
+                                        return tx.done;
+                                    })
+                            }
+                        })
                     return res;
                 })
         )
@@ -101,3 +112,5 @@ self.addEventListener('fetch', event => {
             })
     )}
 })
+
+//workbox.routing.registerRoute  ({request}) => request.destination === 'image', new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst())
