@@ -1,15 +1,13 @@
-importScripts(
-    'https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js'
-  );
+
+importScripts('/src/js/idb.js');
   
 workbox.routing.registerRoute(
     ({request}) => request.destination === 'image',
     new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst()
 )
 
-const CACH_VERSION = 3;
-const CURRENT_STATIC_CACHE = 'static-v'+CACHE_VERSION;
-const CURRENT_DYNAMIC_CACHE = 'dynamic-v'+CACHE_VERSION;
+const CURRENT_STATIC_CACHE = 'static-3';
+const CURRENT_DYNAMIC_CACHE = 'dynamic-3';
 
 self.addEventListener('activate', event => {
     console.log('service worker --> activating ...', event);
@@ -43,6 +41,7 @@ self.addEventListener('install', event => {
                     '/index.html',
                     '/src/js/app.js',
                     '/src/js/feed.js',
+                    '/src/js/idb.js',
                     '/src/js/material.min.js',
                     '/src/css/app.css',
                     '/src/css/feed.css',
