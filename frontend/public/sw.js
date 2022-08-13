@@ -53,20 +53,6 @@ self.addEventListener('install', event => {
     );
 })
 
-const db = idb.openDB('posts-store', 1, {
-    upgrade(db) {
-        // Create a store of objects
-        const store = db.createObjectStore('posts', {
-            // The '_id' property of the object will be the key.
-            keyPath: '_id',
-            // If it isn't explicitly set, create a value by auto incrementing.
-            autoIncrement: true,
-        });
-        // Create an index on the '_id' property of the objects.
-        store.createIndex('_id', '_id');
-    },
-});
-
 
 self.addEventListener('fetch', event => {
     // check if request is made by chrome extensions or web page
@@ -80,15 +66,16 @@ self.addEventListener('fetch', event => {
                 .then ( res => {
                     const clonedResponse = res.clone();
                     clearAllData('posts')
-                .then( () => {
-                    clonedResponse.json()
+                    .then( () => {
+                        return clonedResponse.json();
+                    })
                     .then( data => {
                         for(let key in data)
                         {
                             console.log('write data', data[key]);
                             writeData('posts', data[key]);
                         }
-                    })
+                    
                 });
                     return res;
                 })
