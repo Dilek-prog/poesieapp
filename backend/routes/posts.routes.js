@@ -17,7 +17,7 @@ function getOnePost(id) {
             let fileName = post.image_id;
 
             collectionFiles.find({filename: fileName}).toArray( async(err, docs) => {
-                // console.log('docs', docs)
+                console.log('docs', docs)
 
                 collectionChunks.find({files_id : docs[0]._id}).sort({n: 1}).toArray( (err, chunks) => {
 
