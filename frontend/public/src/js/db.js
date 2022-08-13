@@ -21,3 +21,21 @@ function writeData(st, data) {
             return tx.done;
         })
 }
+
+function readAllData(st) {
+    return db
+        .then( dbPosts => {
+            let tx = dbPosts.transaction(st, 'readonly');
+            let store = tx.objectStore(st);
+            return store.getAll();
+        })
+}
+function clearAllData(st) {
+    return db
+        .then( dbPosts => {
+            let tx = dbPosts.transaction(st, 'readwrite');
+            let store = tx.objectStore(st);
+            store.clear();
+            return tx.done;
+        })
+}
