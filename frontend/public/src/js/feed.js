@@ -24,8 +24,8 @@ function createCard(card) {
   let cardTitle = document.createElement('div');
   cardTitle.className = 'mdl-card__title';
   let image = new Image();
-  images.src = card.images._id;
-  cardTitle.style.backgroundImage = 'url('+ images.src +')';
+  image.src = card.image_id;
+  cardTitle.style.backgroundImage = 'url('+ image.src +')';
   cardTitle.style.backgroundSize = 'cover';
   cardTitle.style.height = '180px';
   cardWrapper.appendChild(cardTitle);
