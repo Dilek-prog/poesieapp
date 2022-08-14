@@ -40,21 +40,34 @@ function createCard(card) {
   cardWrapper.appendChild(cardSupportingText);
   componentHandler.upgradeElement(cardWrapper);
   sharedMomentsArea.appendChild(centerWrapper);
+
 }
-
+let networkDataReceived = false;
 fetch('http://localhost:3000/posts')
-    .then((res) => {
-        return res.json();
-    })
-    .then((data) => {
-        updateUI(data);
-    });
+.then((res) => {
+    return res.json();
+})
+.then((data) => {
+  networkDataReceived = true;
+  console.log('From backend ...', data);
+    updateUI(data);
+});
 
-    function updateUI(data) {
+function updateUI(data) {
 
-      for(let card of data)
-      {
-         createCard(card);
-      }
-  
+  for(let card of data)
+  {
+     createCard(card);
   }
+
+}
+   
+if('indexedDB' in window) {
+  readAllData('posts')
+      .then( data => {
+          if(!networkDataReceived) {
+              console.log('From cache ...', data);
+              updateUI(data);
+          }
+      })
+}
