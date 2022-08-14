@@ -2,7 +2,7 @@
 importScripts('/src/js/idb.js');
 importScripts('/src/js/db.js');
 
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 4;
 const CURRENT_STATIC_CACHE = 'static-v'+CACHE_VERSION;
 const CURRENT_DYNAMIC_CACHE = 'dynamic-v'+CACHE_VERSION;
 
@@ -22,11 +22,6 @@ self.addEventListener('activate', event => {
     return self.clients.claim();
 })
 
-self.addEventListener('fetch', event => {
-    console.log('service worker --> fetching ...', event);
-    event.respondWith(fetch(event.request));
-})
-
 const STATIC_FILES = [
     '/',
     '/index.html',
@@ -34,6 +29,7 @@ const STATIC_FILES = [
     '/src/js/feed.js',
     '/src/js/material.min.js',
     '/src/js/idb.js',
+    '/src/js/db.js',
     '/src/css/app.css',
     '/src/css/feed.css',
     '/src/images/htw.jpg',
