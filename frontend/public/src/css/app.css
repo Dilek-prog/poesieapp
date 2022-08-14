@@ -10,156 +10,26 @@
   box-sizing: border-box;
 }
 
-.header {
-  padding: 30px;
-  text-align: center;
-  background: #62b9a8;
-  color: white;
-  margin-top: 50px;
-  font-size: 1.9em;
+
+.mdl-card {
+  width: 66%;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.12), 0 5px 10px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-#alles{
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  margin-right: 5%;
-  margin-left:3%;
-}
-.row {  
- display: flex;
- flex-wrap: wrap;
+.mdl-card:hover{
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
-/* mit row und side erstelle ich diese 2 differenzierungen */
-
-.side {
- flex: 10%;
- background-color: #f1f1f1;
- padding: 30px;
-}
-
-h1{
- font-size: 2em;
- font-family: "Permanent Marker";
-}
-
-h2{
+h2.mdl-card__title-text{
  font-family: "Permanent Marker";
  font-size: 2em;
- text-decoration: underline;
  margin-left: 3%;
+ color: white;
+ text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+
 }
-
-h6{
- font-family: "Permanent Marker";
- font-size: 1.3em;
- margin-left: 3%;
-}
-
-.r{
- margin-left: 3%;
-}
-
-#r{
- margin-left:3%;
-}
-
-.foto{
- width: 80%;
- padding: 15px;
- margin-left: 3%;
-}
-
-#untertitel{
- background-color:#62b9a8;
- color:#ffffff;
- text-align: center;
- width: 360px;
-}
-
-#untertitel:hover, .pu:active{
- font-size: 18px;
-}
-
-h3{
- font-family: "Permanent Marker";
- font-size: 1.5em;
- text-decoration: underline;
- text-align: center;
-}
-
-.main {
- flex: 50%;
- background-color: white;
- padding: 20px;
- margin-left: 0.5%;  
-}
-
-#klappentext{
- font-family: "Permanent Marker";
- font-size: 18px;
- margin-right: 5%;
- margin-left: 3%;
-}
-
-#untertext{
- margin-right: 5%;
- margin-left: 3%;
- text-align: center;
- box-shadow: 0 4px 13px 0 rgba(0, 0, 0, 0.2);
-}
-
-#untertext:hover, #p2:active{
- font-size: 18px;
-}
-
-#zitate{
- margin-left:3%;
- margin-right: 5%;
- text-align: center;
- font-size: 20px;
- padding:10px;
- box-shadow: 0 4px 13px 0 rgba(0, 0, 0, 0.2);
-}
-
-#zitate:hover, #zitate:active{
- font-size: 18px;
-}
-
-.text{
- font-size: medium;
- padding: 7px;
-}
-
-#löschen{
- background-color: #62b9a8;
- position: right;
-}
-
-#löschen:hover{
- background-color: #318f7c;
-}
-
-#bearbeiten{
-background-color: #62b9a8;
-margin-left: 5%;
-}
-
-#bearbeiten:hover{
-background-color: #318f7c;
-}
-
-
-/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media (max-width: 800px) {
-  .row, .navbar {   
-    flex-direction: column;
-  }
-}
-
-
 
 /* Bild ganz Oben */
 
