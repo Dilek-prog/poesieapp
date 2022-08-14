@@ -26,8 +26,10 @@ function createCard(card) {
   clone.querySelector('.template-title-wrapper').style.backgroundImage='url('+ image.src +')'; 
   sharedMomentsArea.appendChild(clone);
 
+
 }
 let networkDataReceived = false;
+
 fetch('http://localhost:3000/posts')
 .then((res) => {
     return res.json();
@@ -39,17 +41,18 @@ fetch('http://localhost:3000/posts')
 });
 
 function updateUI(data) {
-
+  sharedMomentsArea.innerHTML='';
   for(let card of data)
   {
      createCard(card);
   }
 
 }
-   
+
 if('indexedDB' in window) {
   readAllData('posts')
       .then( data => {
+        console.log(networkDataReceived);
           if(!networkDataReceived) {
               console.log('From cache ...', data);
               updateUI(data);
