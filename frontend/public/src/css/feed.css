@@ -8,7 +8,8 @@
   top: 56px;
   background: white;
   text-align: center;
-  display: none;
+  transform: translateY(100vH);
+  transition: transform 0.3s;
 }
 
 .main-image {
@@ -35,3 +36,31 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (min-width: 600px) {
+  .shared-moment-card.mdl-card {
+      width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .shared-moment-card.mdl-card {
+      width: 45%;
+  }
+}
+
+.shared-moment-card .mdl-card__title {
+  height: 400px;
+}
+
+@media (min-height: 600px) {
+  .shared-moment-card .mdl-card__title {
+      height: 300px;
+  }
+}
+
+@media (min-height: 1200px) {
+  .shared-moment-card .mdl-card__title {
+      height: 380px;
+  }
+}       
