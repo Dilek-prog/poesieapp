@@ -66,8 +66,16 @@
       </nav>
     </div>
     <main class="mdl-layout__content mat-typography">
-      <div id="create-post">
+      
         <form>
+          <div id="create-post">
+            <video id="player" autoplay></video>
+            <canvas id="canvas" width="320px" height="240px"></canvas>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="capture-btn">Foto</button>
+            <div id="pick-image">
+                <h6>Bild auswählen</h6>
+                <input type="file" accept="image/*" id="image-picker">
+            </div>
           <div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="title">
             <label class="mdl-textfield__label" for="title" name="title">Titel</label>
@@ -75,6 +83,10 @@
           <div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="manual-location">
             <input class="mdl-textfield__input" type="text" id="location">
             <label class="mdl-textfield__label" for="location" name="location">Ort</label>
+          </div>
+          <div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="text">
+            <label class="mdl-textfield__label" for="text" name="title">Text</label>
           </div>
           <br>
           <div>
@@ -88,8 +100,9 @@
               <i class="material-icons">close</i>
             </button>
           </div>
+         </div>
         </form>
-      </div>
+   
     
       
       <div id="hero">
