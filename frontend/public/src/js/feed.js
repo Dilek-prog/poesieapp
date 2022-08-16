@@ -3,13 +3,16 @@ let createPostArea = document.querySelector('#create-post');
 let closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 let sharedMomentsArea = document.querySelector('#shared-moments');
 let cardTemplate = document.querySelector('#poesie-card-template');
+let form = document.querySelector('form');
+let titleInput = document.querySelector('#title');
+let locationInput = document.querySelector('#location');
 
 function openCreatePostModal() {
-  createPostArea.style.display = 'block';
+  createPostArea.style.transform = 'translateY(0)';
 }
 
 function closeCreatePostModal() {
-  createPostArea.style.display = 'none';
+  createPostArea.style.transform = 'translateY(100vH)';
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
