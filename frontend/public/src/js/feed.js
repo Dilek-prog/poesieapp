@@ -6,20 +6,71 @@ let cardTemplate = document.querySelector('#poesie-card-template');
 let form = document.querySelector('form');
 let titleInput = document.querySelector('#title');
 let locationInput = document.querySelector('#location');
+let textInput = document.querySelector('#text');
+let videoPlayer = document.querySelector('#player');
+let canvasElement = document.querySelector('#canvas');
+let captureButton = document.querySelector('#capture-btn');
+let imagePicker = document.querySelector('#image-picker');
+let imagePickerArea = document.querySelector('#pick-image');
+let file = null;
+let titleValue = '';
+let locationValue = '';
+let imageURI = '';
+let textValue = '';
+
+function initializeMedia() {
+  if(!('mediaDevices' in navigator)) {
+    navigator.mediaDevices = {};
+}
+
+if(!('getUserMedia' in navigator.mediaDevices)) {
+    navigator.mediaDevices.getUserMedia = function(constraints) {
+        let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        if(!getUserMedia) {
+            return Promise.reject(new Error('getUserMedia is not implemented'));
+        }
+
+        return new Promise( (resolve, reject) => {
+            getUserMedia.call(navigator, constraints, resolve, reject);
+        })
+    }
+}
+navigator.mediaDevices.getUserMedia({video: true}) //Kamera Zugriff
+.then( stream => {
+    videoPlayer.srcObject = stream;
+    videoPlayer.style.display = 'block';
+})
+.catch( err => {
+    imagePickerArea.style.display = 'block';
+});
+}
 
 function openCreatePostModal() {
-  createPostArea.style.transform = 'translateY(0)';
+  setTimeout( () => {
+    createPostArea.style.transform = 'translateY(0)';
+}, 1);
+  initializeMedia();
 }
 
 function closeCreatePostModal() {
   createPostArea.style.transform = 'translateY(100vH)';
+  imagePickerArea.style.display = 'none'; // Sobald kein Foto gemacht werden möchte, kommt der Zugriff auf den Desktop
+  videoPlayer.style.display = 'none';
+  canvasElement.style.display = 'none';
+  if(videoPlayer.srcObject) {
+    videoPlayer.srcObject.getVideoTracks().forEach( track => track.stop());
+}
+  setTimeout( () => {
+    createPostArea.style.transform = 'translateY(100vH)';
+}, 1);
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
 
 closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 
-function createCard(card) {
+function createCard(card) { // Komplettes Tamplett erichtet für die Posts
   let clone = cardTemplate.content.cloneNode(true);
   clone.querySelector('.template-title').textContent=card.title;
   clone.querySelector('.template-location').textContent=card.location;
@@ -62,3 +113,91 @@ if('indexedDB' in window) {
           }
       })
 }
+
+form.addEventListener('submit', event => { //triggert backend an 
+event.preventDefault(); // nicht absenden und neu laden
+
+  if (titleInput.value.trim() === '' || locationInput.value.trim() === '') { // nimmt die Leehrzeichen am Ende weg --> prüft die Eingabe, ob etwas frei gelassen wurde 
+      alert('Bitte Titel und Location angeben!') // gibt dem User ne Info
+      return;
+  }
+
+  closeCreatePostModal();
+});
+
+function sendDataToBackend() { // Das fertige Formular absenden an an GET 
+  const formData = new FormData();
+  formData.append('title', titleValue);
+  formData.append('location', locationValue);
+  formData.append('file', file);
+  formData.append('text', textValue);
+
+  console.log('formData', formData)
+
+  fetch('http://localhost:3000/posts', {
+      method: 'POST',
+      body: formData
+  })
+  .then( response => {
+      console.log('Data sent to backend ...', response);
+      return response.json();
+  })
+  .then( data => {
+      console.log('data ...', data);
+      const newPost = {
+          title: data.title,
+          location: data.location,
+          image_id: imageURI,
+          text: data.text
+      }
+      updateUI([newPost]);
+  });
+}
+
+form.addEventListener('submit', event => {
+  event.preventDefault(); // nicht absenden und neu laden
+
+  if (file == null) {
+      alert('Erst Foto aufnehmen!')
+      return;
+  }
+  if (titleInput.value.trim() === '' || locationInput.value.trim() === '') {
+      alert('Bitte Titel, Text und Location angeben!')
+      return;
+  }
+
+  closeCreatePostModal();
+
+  titleValue = titleInput.value;
+  locationValue = locationInput.value;
+  textValue = textInput.value;
+
+
+  sendDataToBackend();
+});
+
+captureButton.addEventListener('click', event => {
+  event.preventDefault(); // nicht absenden und neu laden
+  canvasElement.style.display = 'block';
+  videoPlayer.style.display = 'none';
+  captureButton.style.display = 'none';
+  let context = canvasElement.getContext('2d');
+  context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width));
+
+
+  imageURI = canvas.toDataURL("image/jpg");
+  // console.log('imageURI', imageURI)       // base64-String des Bildes
+
+  fetch(imageURI)
+  .then(res => {
+      return res.blob()
+  })
+  .then(blob => {
+      file = new File([blob], "myFile.jpg", { type: "image/jpg" })
+      console.log('file', file)
+  })
+});
+
+imagePicker.addEventListener('change', event => {
+  file = event.target.files[0];
+});
