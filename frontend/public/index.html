@@ -11,6 +11,8 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css" type="text/css">
+  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js"></script>
   <link rel="stylesheet"
         href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css">
   <link rel="stylesheet" href="/src/css/app.css">
@@ -84,10 +86,16 @@
             <input class="mdl-textfield__input" type="text" id="location">
             <label class="mdl-textfield__label" for="location" name="location">Ort</label>
           </div>
+          <div class="input-section">
+            <button class="mdl-button mdl-js-button mdl-button--colored" type="button" id="location-btn">Location</button>
+            <div class="mdl-spinner mdl-js-spinner is-active" id="location-loader"></div>
+        </div>
+        <div id="map" class="map"></div>
           <div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="text">
             <label class="mdl-textfield__label" for="text" name="title">Text</label>
           </div>
+       
           <br>
           <div>
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent"
