@@ -14,6 +14,7 @@ let imagePicker = document.querySelector('#image-picker');
 let imagePickerArea = document.querySelector('#pick-image');
 let locationButton = document.querySelector('#location-btn'); // Zugriff auf Location Button
 let locationLoader = document.querySelector('#location-loader'); // Zugriff auf Location Button
+let mapDiv = document.querySelector('.map');
 let fetchedLocation;  // Zugriff auf Location Button
 let file = null;
 let titleValue = '';
@@ -209,7 +210,7 @@ imagePicker.addEventListener('change', event => {
 });
 
 
-locationButton.addEventListener('click', event => { // Button wird eingefügt mit Click Ereignis  -->Geolocation
+locationButton.addEventListener('click', event => {
   if(!('geolocation' in navigator)) {
       return;
   }
@@ -222,7 +223,58 @@ locationButton.addEventListener('click', event => { // Button wird eingefügt mi
       locationLoader.style.display = 'none';
       fetchedLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       console.log('current position: ', fetchedLocation);
-      locationInput.value = 'In Berlin';
+
+      let nominatimURL = 'https://nominatim.openstreetmap.org/reverse'; 
+      nominatimURL += '?format=jsonv2';   // format=[xml|json|jsonv2|geojson|geocodejson]
+      nominatimURL += '&lat=' + fetchedLocation.latitude;
+      nominatimURL += '&lon=' + fetchedLocation.longitude;
+
+      fetch(nominatimURL)
+      .then((res) => {
+          console.log('nominatim res ...', res);
+          return res.json();
+      })
+      .then((data) => {
+          console.log('nominatim res.json() ...', data);
+          locationInput.value = data.display_name;
+          return data;
+      })
+      .then( d => {
+          locationButton.style.display = 'none';
+          locationLoader.style.display = 'none';
+          mapDiv.style.display = 'block';
+
+          const map = new ol.Map({ //map erstellen
+              target: 'map',
+              layers: [
+              new ol.layer.Tile({
+                  source: new ol.source.OSM()
+              })
+              ],
+              view: new ol.View({
+                  center: ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]),
+                  zoom: 12
+              })
+          });
+
+          const layer = new ol.layer.Vector({
+              source: new ol.source.Vector({
+                  features: [
+                      new ol.Feature({
+                          geometry: new ol.geom.Point(ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]))
+                      })
+                  ]
+              })
+          });
+
+          map.addLayer(layer);
+
+          console.log('map', map)
+      })
+      .catch( (err) => {
+          console.error('err', err)
+          locationInput.value = 'In Berlin';
+      });
       document.querySelector('#manual-location').classList.add('is-focused');
   }, err => {
       console.log(err);
