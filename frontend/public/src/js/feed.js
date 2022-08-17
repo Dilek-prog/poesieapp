@@ -12,6 +12,9 @@ let canvasElement = document.querySelector('#canvas');
 let captureButton = document.querySelector('#capture-btn');
 let imagePicker = document.querySelector('#image-picker');
 let imagePickerArea = document.querySelector('#pick-image');
+let locationButton = document.querySelector('#location-btn'); // Zugriff auf Location Button
+let locationLoader = document.querySelector('#location-loader'); // Zugriff auf Location Button
+let fetchedLocation;  // Zugriff auf Location Button
 let file = null;
 let titleValue = '';
 let locationValue = '';
@@ -51,6 +54,7 @@ function openCreatePostModal() {
     createPostArea.style.transform = 'translateY(0)';
 }, 1);
   initializeMedia();
+  initializeLocation();
 }
 
 function closeCreatePostModal() {
@@ -58,6 +62,8 @@ function closeCreatePostModal() {
   imagePickerArea.style.display = 'none'; // Sobald kein Foto gemacht werden möchte, kommt der Zugriff auf den Desktop
   videoPlayer.style.display = 'none';
   canvasElement.style.display = 'none';
+  locationButton.style.display = 'inline';
+  locationLoader.style.display = 'none';
   if(videoPlayer.srcObject) {
     videoPlayer.srcObject.getVideoTracks().forEach( track => track.stop());
 }
@@ -154,7 +160,7 @@ function sendDataToBackend() { // Das fertige Formular absenden an an GET
   });
 }
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', event => { // Funktion für den Speicherbutton 
   event.preventDefault(); // nicht absenden und neu laden
 
   if (file == null) {
@@ -166,14 +172,14 @@ form.addEventListener('submit', event => {
       return;
   }
 
-  closeCreatePostModal();
+  closeCreatePostModal(); // Der Button kann geschlossen werden und hängt mit der Funktion CloseCreatePostModal zusammen
 
-  titleValue = titleInput.value;
+  titleValue = titleInput.value; 
   locationValue = locationInput.value;
   textValue = textInput.value;
 
 
-  sendDataToBackend();
+  sendDataToBackend(); // Die Werte werden an das Backend gesendet
 });
 
 captureButton.addEventListener('click', event => {
@@ -201,3 +207,34 @@ captureButton.addEventListener('click', event => {
 imagePicker.addEventListener('change', event => {
   file = event.target.files[0];
 });
+
+
+locationButton.addEventListener('click', event => { // Button wird eingefügt mit Click Ereignis  -->Geolocation
+  if(!('geolocation' in navigator)) {
+      return;
+  }
+
+  locationButton.style.display = 'none';
+  locationLoader.style.display = 'block';
+
+  navigator.geolocation.getCurrentPosition( position => {
+      locationButton.style.display = 'inline';
+      locationLoader.style.display = 'none';
+      fetchedLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+      console.log('current position: ', fetchedLocation);
+      locationInput.value = 'In Berlin';
+      document.querySelector('#manual-location').classList.add('is-focused');
+  }, err => {
+      console.log(err);
+      locationButton.style.display = 'inline';
+      locationLoader.style.display = 'none';
+      alert('Couldn\'t fetch location, please enter manually!');
+      fetchedLocation = null;
+  }, { timeout: 5000});
+});
+
+function initializeLocation() { // hier wird geprüft, ob der Browser Geolacation-API unterstützt 
+  if(!('geolocation' in navigator)) {
+      locationButton.style.display = 'none';
+  }
+}
