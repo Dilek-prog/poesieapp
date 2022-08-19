@@ -178,9 +178,35 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
   titleValue = titleInput.value; 
   locationValue = locationInput.value;
   textValue = textInput.value;
+  console.log('titleInput', titleValue)
+  console.log('locationInput', locationValue)
+  console.log('textInput', textValue)
+  console.log('file', file)
 
+  if('serviceWorker' in navigator && 'SyncManager' in window) {
+    navigator.serviceWorker.ready
+        .then( sw => {
+            let post = {
+                id: new Date().toISOString(),
+                title: titleValue,
+                location: locationValue,
+                text: textValue,
+                image_id: file
+            };
 
-  sendDataToBackend(); // Die Werte werden an das Backend gesendet
+            writeData('sync-posts', post)
+                .then( () => {
+                    return sw.sync.register('sync-new-post');
+                })
+                .then( () => {
+                    let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
+                    let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
+                    snackbarContainer.showSnackbar(data);
+                });
+        });
+    } else {
+        sendDataToBackend();
+    }
 });
 
 captureButton.addEventListener('click', event => {
