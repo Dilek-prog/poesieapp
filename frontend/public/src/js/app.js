@@ -34,21 +34,58 @@ function displayConfirmNotification() { // Erlauben von Nachricht
     }
 }
 
+function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 function configurePushSubscription() {
     if(!('serviceWorker' in navigator)) {
         return
     }
 
+    let swReg;
     navigator.serviceWorker.ready
         .then( sw => {
+            swReg = sw;
             return sw.pushManager.getSubscription();
         })
         .then( sub => {
             if(sub === null) {
-                // create a new subscription
+                let vapidPublicKey = 'BIHPm_b7Qmw9VDjMGRuVW_x7NsjTqHc-opM8MgOtW8EVTY0YseYPoc8BMzm6i1JsbtVXz65fmwgdB6a4ZOxqUKs';
+                let convertedVapidPublicKey = urlBase64ToUint8Array(vapidPublicKey);
+                return swReg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: convertedVapidPublicKey,
+                });
             } else {
                 // already subscribed
             }
+        })
+        .then( newSub => {
+            return fetch('http://localhost:3000/subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(newSub)
+            })
+            .then( response => {
+                if(response.ok) {
+                    displayConfirmNotification();
+                }
+            })
         });
 }
 
