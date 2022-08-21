@@ -11,8 +11,27 @@ if ('serviceWorker' in navigator) {
         );
 }
 function displayConfirmNotification() { // Erlauben von Nachricht 
-    let options = { body: 'You successfully subscribed to our Notification service!'};
-    new Notification('Successfully subscribed!', options);
+    if('serviceWorker' in navigator) {
+        let options = {
+            body: 'You successfully subscribed to our Notification service!',
+            icon: '/src/images/icons/fiw96x96.png',
+            image: '/src/images/htw-sm.jpg',
+            lang: 'de-DE',
+            vibrate: [100, 50, 200],
+            badge: '/src/images/icons/fiw96x96.png',
+            tag: 'confirm-notification',
+            renotify: true,
+            actions: [
+                { action: 'confirm', title: 'Ok', icon: '/src/images/icons/fiw96x96.png' },
+                { action: 'cancel', title: 'Cancel', icon: '/src/images/icons/fiw96x96.png' },
+            ]
+        };
+
+        navigator.serviceWorker.ready
+            .then( sw => {
+                sw.showNotification('Successfully subscribed (from SW)!', options);
+            });
+    }
 }
 function askForNotificationPermission() { //Klickereignis, wenn der Browser die API unterstützt, wird sie verwendet 
     Notification.requestPermission( result => {
