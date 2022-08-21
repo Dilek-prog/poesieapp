@@ -33,13 +33,33 @@ function displayConfirmNotification() { // Erlauben von Nachricht
             });
     }
 }
+
+function configurePushSubscription() {
+    if(!('serviceWorker' in navigator)) {
+        return
+    }
+
+    navigator.serviceWorker.ready
+        .then( sw => {
+            return sw.pushManager.getSubscription();
+        })
+        .then( sub => {
+            if(sub === null) {
+                // create a new subscription
+            } else {
+                // already subscribed
+            }
+        });
+}
+
 function askForNotificationPermission() { //Klickereignis, wenn der Browser die API unterstützt, wird sie verwendet 
     Notification.requestPermission( result => {
         console.log('User choice', result);
         if(result !== 'granted') {
             console.log('No notification permission granted');
         } else {
-            displayConfirmNotification();
+           // displayConfirmNotification();
+           configurePushSubscription(); // erlaubnis von Push nachrichten 
         }
     });
 }
