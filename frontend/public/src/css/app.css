@@ -6,6 +6,10 @@
   padding: 16px;
 }
 
+.enable-notifications {
+  display: none;
+}
+
 * {
   box-sizing: border-box;
 }
