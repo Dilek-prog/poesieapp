@@ -10,15 +10,17 @@ if ('serviceWorker' in navigator) {
             err => { console.log(err); }
         );
 }
-
+function displayConfirmNotification() { // Erlauben von Nachricht 
+    let options = { body: 'You successfully subscribed to our Notification service!'};
+    new Notification('Successfully subscribed!', options);
+}
 function askForNotificationPermission() { //Klickereignis, wenn der Browser die API unterstützt, wird sie verwendet 
     Notification.requestPermission( result => {
         console.log('User choice', result);
         if(result !== 'granted') {
             console.log('No notification permission granted');
         } else {
-            // displayConfirmNotification();
-            configurePushSubscription();
+            displayConfirmNotification();
         }
     });
 }
