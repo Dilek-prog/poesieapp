@@ -69,7 +69,11 @@ function configurePushSubscription() {
                     applicationServerKey: convertedVapidPublicKey,
                 });
             } else {
-                // already subscribed
+                // falls es exsistiert aber neu erstellt werden soll
+                sub.unsubscribe()
+                .then( () => {
+                    console.log('unsubscribed()', sub)
+                })
             }
         })
         .then( newSub => {
