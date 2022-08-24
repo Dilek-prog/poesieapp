@@ -27,8 +27,8 @@ const pushSubscription ={
   function sendNotification() {
     webpush.setVapidDetails('mailto:DilekOgur2253@gmail.com', publicVapidKey, privateVapidKey);
     const payload = JSON.stringify({
-        title: 'New Push Notification',
-        content: 'New data in database!'
+        title: 'Neue Poesie',
+        content: 'Auf progressive poesie wurde ein neues Gedicht veröffentlicht.'
     });
     webpush.sendNotification(pushSubscription,payload)
         .catch(err => console.error(err));
