@@ -103,7 +103,7 @@ fetch('http://localhost:3000/posts')
 });
 
 function updateUI(data) {
- // sharedMomentsArea.innerHTML='';
+  sharedMomentsArea.innerHTML='';
   for(let card of data)
   {
      createCard(card);
