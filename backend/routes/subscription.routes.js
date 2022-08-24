@@ -2,8 +2,8 @@ const express = require('express');
 const webpush = require('web-push');
 const router = express.Router();
 
-const publicVapidKey = 'BIHPm_b7Qmw9VDjMGRuVW_x7NsjTqHc-opM8MgOtW8EVTY0YseYPoc8BMzm6i1JsbtVXz65fmwgdB6a4ZOxqUKs';
-const privateVapidKey = 'VzwW_3sD29mlbTG6bKMcJeEPCKj0v9Ge1l48ZrDw7c0';
+const publicVapidKey = 'BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0';
+const privateVapidKey = 'm9GRo47n3HKKzgvZYpr_8TFkvCKC6P1Zg_CKyDe8sgU';
 
 router.post('/', async(req, res) => {
     const subscription = req.body;
