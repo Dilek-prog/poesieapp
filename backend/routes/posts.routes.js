@@ -1,3 +1,5 @@
+const webpush = require('web-push');
+
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/posts');
@@ -8,6 +10,32 @@ const mongoose = require('mongoose');
 const connect = mongoose.createConnection(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true });
 const collectionFiles = connect.collection('posts.files');
 const collectionChunks = connect.collection('posts.chunks');
+
+const publicVapidKey = 'BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0';
+const privateVapidKey = 'm9GRo47n3HKKzgvZYpr_8TFkvCKC6P1Zg_CKyDe8sgU';
+const pushSubscription ={
+        endpoint: 'https://fcm.googleapis.com/fcm/send/cEroN3XyO-s:APA91bHJJQS4pM0hLOwEMZEzpQR1NtsKYZQuU80NdBvEdPnzj7wASMZ_zlKVSkkRdXnETHd_3tyTphVD03E__oan-AeQ_w1dGL9q6VsLwu_PEHmmGUh3WmfNxN57Tr4BBO7pwutVj01e',
+        expirationTime: null,
+        keys: {
+          p256dh: 'BDu_Pz1MmK5DgVbLH9gkfqKuqA3EVXlDsGtP7i4ONkf5v0WBxiKfr0iHIbnsmxtgPm5dazWv26ywjrwWY3hwGY0',
+          auth: 'BGwfQPKRf42FRa9NlO8aIg'
+        
+      }
+    }
+
+  
+  function sendNotification() {
+    webpush.setVapidDetails('mailto:DilekOgur2253@gmail.com', publicVapidKey, privateVapidKey);
+    const payload = JSON.stringify({
+        title: 'New Push Notification',
+        content: 'New data in database!'
+    });
+    webpush.sendNotification(pushSubscription,payload)
+        .catch(err => console.error(err));
+    console.log('push notification sent');
+   // res.status(201).json({ message: 'push notification sent'});
+}
+
 
 function getOnePost(id) {
     return new Promise( async(resolve, reject) => {
@@ -97,6 +125,7 @@ router.post('/', upload.single('file'), async(req, res) => {
             text: req.body.text
         })
         await newPost.save();
+        sendNotification();
         return res.send(newPost);
     }
 })
