@@ -40,6 +40,7 @@ if(!('getUserMedia' in navigator.mediaDevices)) {
         })
     }
 }
+
 navigator.mediaDevices.getUserMedia({video: true}) //Kamera Zugriff
 .then( stream => {
     videoPlayer.srcObject = stream;
@@ -102,7 +103,7 @@ fetch('http://localhost:3000/posts')
 });
 
 function updateUI(data) {
-  sharedMomentsArea.innerHTML='';
+ // sharedMomentsArea.innerHTML='';
   for(let card of data)
   {
      createCard(card);
@@ -199,6 +200,7 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
                     return sw.sync.register('sync-new-post');
                 })
                 .then( () => {
+                    console.log("creating confirmation toast ...");
                     let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
                     let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
                     snackbarContainer.showSnackbar(data);
@@ -216,8 +218,9 @@ captureButton.addEventListener('click', event => {
   captureButton.style.display = 'none';
   let context = canvasElement.getContext('2d');
   context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width));
-
-
+  videoPlayer.srcObject.getVideoTracks().forEach( track => {
+    track.stop();
+})
   imageURI = canvas.toDataURL("image/jpg");
   // console.log('imageURI', imageURI)       // base64-String des Bildes
 
@@ -278,8 +281,8 @@ locationButton.addEventListener('click', event => {
               })
               ],
               view: new ol.View({
-                  center: ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]),
-                  zoom: 12
+              center: ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]),
+              zoom: 12
               })
           });
 
@@ -301,7 +304,9 @@ locationButton.addEventListener('click', event => {
           console.error('err', err)
           locationInput.value = 'In Berlin';
       });
+
       document.querySelector('#manual-location').classList.add('is-focused');
+
   }, err => {
       console.log(err);
       locationButton.style.display = 'inline';
