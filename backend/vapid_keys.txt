@@ -1,0 +1,15 @@
+
+> backend@1.0.0 web-push
+> web-push "generate-vapid-keys"
+
+
+=======================================
+
+Public Key:
+BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0
+
+Private Key:
+m9GRo47n3HKKzgvZYpr_8TFkvCKC6P1Zg_CKyDe8sgU
+
+=======================================
+
