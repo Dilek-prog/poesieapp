@@ -96,6 +96,7 @@ self.addEventListener('fetch', event => {
     )}
 })
 
+
 //workbox.routing.registerRoute  ({request}) => request.destination === 'image', new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst())
 
 self.addEventListener('sync', event => {
@@ -145,9 +146,43 @@ self.addEventListener('notificationclick', event => {
         notification.close();
     } else {
         console.log(action);
+        event.waitUntil(
+            clients.matchAll()      // clients sind alle Windows (Browser), fuer die der Service Worker verantwortlich ist
+                .then( clientsArray => {
+                    let client = clientsArray.find( c => {
+                        return c.visibilityState === 'visible';
+                    });
+
+                    if(client !== undefined) {
+                        client.navigate('http://localhost:8080');
+                        client.focus();
+                    } else {
+                        clients.openWindow('http://localhost:8080');
+                    }
+                    notification.close();
+                })
+        );
     }
 });
 
 self.addEventListener('notificationclose', event => {
     console.log('notification was closed', event);
+});
+
+
+self.addEventListener('push', event => {
+    console.log('push notification received', event);
+    let data = { title: 'Test', content: 'Fallback message'};
+    if(event.data) {
+        data = JSON.parse(event.data.text());
+    }
+
+    let options = {
+        body: data.content,
+        icon: '/src/images/icons/fiw96x96.png',
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(data.title, options)
+    );
 });

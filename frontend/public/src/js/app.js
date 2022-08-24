@@ -10,7 +10,9 @@ if ('serviceWorker' in navigator) {
             err => { console.log(err); }
         );
 }
+
 function displayConfirmNotification() { // Erlauben von Nachricht 
+
     if('serviceWorker' in navigator) {
         let options = {
             body: 'You successfully subscribed to our Notification service!',
@@ -62,7 +64,7 @@ function configurePushSubscription() {
         })
         .then( sub => {
             if(sub === null) {
-                let vapidPublicKey = 'BIHPm_b7Qmw9VDjMGRuVW_x7NsjTqHc-opM8MgOtW8EVTY0YseYPoc8BMzm6i1JsbtVXz65fmwgdB6a4ZOxqUKs';
+                let vapidPublicKey = 'BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0';
                 let convertedVapidPublicKey = urlBase64ToUint8Array(vapidPublicKey);
                 return swReg.pushManager.subscribe({
                     userVisibleOnly: true,
@@ -73,7 +75,7 @@ function configurePushSubscription() {
                 sub.unsubscribe()
                 .then( () => {
                     console.log('unsubscribed()', sub)
-                })
+                }) 
             }
         })
         .then( newSub => {
@@ -86,6 +88,7 @@ function configurePushSubscription() {
                 body: JSON.stringify(newSub)
             })
             .then( response => {
+                console.log(response);
                 if(response.ok) {
                     displayConfirmNotification();
                 }
