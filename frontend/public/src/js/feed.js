@@ -85,7 +85,12 @@ function createCard(card) { // Komplettes Tamplett erichtet für die Posts
   clone.querySelector('.template-text').textContent=card.text;
   let image = new Image();
   image.src = card.image_id;
-  clone.querySelector('.template-title-wrapper').style.backgroundImage='url('+ image.src +')'; 
+  clone.querySelector('.template-title-wrapper').style.backgroundImage='url('+ image.src +')';
+  clone.querySelector('.card-delete-icon').onclick = function () { 
+    console.log("Delte Event triggered");
+    delete_button_clicked(card._id)
+  };
+  componentHandler.upgradeElement(clone.querySelector('.mdl-card'));
   sharedMomentsArea.appendChild(clone);
 
 
@@ -207,15 +212,41 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
                     let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
                     let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
                     snackbarContainer.showSnackbar(data);
-                    setTimeout(() => { // Reload für den neuen Post
-                      location.reload();
-                    }, 2000);
+                    delayedUpdate();
+
                 });
         });
     } else {
         sendDataToBackend();
     }
 });
+
+function delete_button_clicked(id){
+  console.log("Delete Button Clicked id:", id);
+  fetch('http://localhost:3000/posts/' + id, {
+      method: 'Delete',
+      
+  })
+  .then( response => {
+    console.log('response to delete request : ', response),
+    delayedUpdate();
+  })
+  
+}
+
+function delayedUpdate(){
+  setTimeout( () => {
+    fetch('http://localhost:3000/posts')
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      //networkDataReceived = true;
+      console.log('From backend ...', data);
+        updateUI(data);
+    });
+  }, 2000);
+}
 
 captureButton.addEventListener('click', event => {
   event.preventDefault(); // nicht absenden und neu laden

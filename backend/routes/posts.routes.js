@@ -41,7 +41,7 @@ function getOnePost(id) {
     return new Promise( async(resolve, reject) => {
         try {
             const post = await Post.findOne({ _id: id });
-            // console.log('post.image_id', post.image_id);
+            console.log('post.image_id', post.image_id);
             let fileName = post.image_id;
 
             collectionFiles.find({filename: fileName}).toArray( async(err, docs) => {
@@ -62,7 +62,8 @@ function getOnePost(id) {
                         "title": post.title,
                         "location": post.location, 
                         "image_id": base64file,
-                        "text": post.text
+                        "text": post.text,
+                        "_id": post._id
                     });
                     //console.log('getPost', getPost)
                     resolve(getPost)
@@ -133,6 +134,7 @@ router.post('/', upload.single('file'), async(req, res) => {
 
 // GET one post via id
 router.get('/:id', async(req, res) => {
+    console.log("Trying to get post: ", req.params.id);
     getOnePost(req.params.id)
     .then( (post) => {
         console.log('post', post);
@@ -177,7 +179,9 @@ router.patch('/:id', async(req, res) => {
 // DELETE one post via id
 router.delete('/:id', async(req, res) => {
     try {
+        console.log("Deleting Post with id: ", req.params.id)
         const post = await Post.findOne({ _id: req.params.id })
+        console.log("Found post: ", post);
         let fileName = post.image_id;
         await Post.deleteOne({ _id: req.params.id });
         await collectionFiles.find({filename: fileName}).toArray( async(err, docs) => {

@@ -33,6 +33,13 @@
   margin: 10px auto;
 }
 
+.card-delete-icon{
+  margin-left: auto;
+  margin-right: 0;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+
 .mdl-spinner {
   margin: auto;
 }

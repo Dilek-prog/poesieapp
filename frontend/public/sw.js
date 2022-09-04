@@ -57,22 +57,23 @@ self.addEventListener('fetch', event => {
 
     const url = 'http://localhost:3000/posts';
     if(event.request.url.indexOf(url) >= 0) {
+        console.log('event.request', event.request)
         event.respondWith(
             fetch(event.request)
                 .then ( res => {
-                    const clonedResponse = res.clone();
-                    clearAllData('posts')
-                    .then( () => {
-                        return clonedResponse.json();
-                    })
-                    .then( data => {
-                        for(let key in data)
-                        {
-                            console.log('write data', data[key]);
-                            writeData('posts', data[key]);
-                        }
-                    
-                });
+                    if(event.request.method === 'GET') {
+                        const clonedResponse = res.clone();
+                        clearAllData('posts')
+                        .then( () => {
+                            clonedResponse.json()
+                            .then( data => {
+                                for(let key in data)
+                                {
+                                    writeData('posts', data[key]);
+                                }
+                            })
+                        })
+                    }
                     return res;
                 })
         )
