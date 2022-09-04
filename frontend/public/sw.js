@@ -114,16 +114,17 @@ self.addEventListener('sync', event => {
                         formData.append('text', data.text);
                         formData.append('file', data.image_id);
 
-                        console.log('formData', formData)
+                        console.log('formData-sw', formData);
 
                         fetch('http://localhost:3000/posts', {
                             method: 'POST',
                             body: formData
                         })
                         .then( response => {
-                            console.log('Data sent to backend ...', response);
+                            console.log('Data sent to backend (sw) ...', response);
                             if(response.ok) {
-                                deleteOneData('sync-posts', data.id)
+                                console.log("Response", response);
+                                deleteOneData('sync-posts', data.id);
                             }
                         })
                         .catch( err => {

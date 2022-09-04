@@ -126,6 +126,7 @@ router.post('/', upload.single('file'), async(req, res) => {
         })
         await newPost.save();
         sendNotification();
+        console.log("Returning new post:", newPost);
         return res.send(newPost);
     }
 })

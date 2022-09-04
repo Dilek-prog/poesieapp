@@ -103,6 +103,8 @@ fetch('http://localhost:3000/posts')
 });
 
 function updateUI(data) {
+  console.log("Update UI ...");
+  console.log(data);
   sharedMomentsArea.innerHTML='';
   for(let card of data)
   {
@@ -148,6 +150,7 @@ function sendDataToBackend() { // Das fertige Formular absenden an an GET
   })
   .then( response => {
       console.log('Data sent to backend ...', response);
+      console.log("Attempting to update ui ...");
       return response.json();
   })
   .then( data => {
@@ -204,6 +207,9 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
                     let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
                     let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
                     snackbarContainer.showSnackbar(data);
+                    setTimeout(() => { // Reload für den neuen Post
+                      location.reload();
+                    }, 2000);
                 });
         });
     } else {
