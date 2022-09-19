@@ -29,6 +29,7 @@ const pushSubscription ={
     const payload = JSON.stringify({
         title: 'Neue Poesie',
         content: 'Auf progressive poesie wurde ein neues Gedicht veröffentlicht.'
+        //openUrl: '/help'
     });
     webpush.sendNotification(pushSubscription,payload)
         .catch(err => console.error(err));
