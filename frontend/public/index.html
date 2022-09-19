@@ -17,7 +17,7 @@
         href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css">
   <link rel="stylesheet" href="/src/css/app.css">
   <link rel="stylesheet" href="/src/css/feed.css">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest.json"> <!--Einbindung von Manifest.json (Instalation)-->
 </head>
 <body>
 
@@ -31,16 +31,14 @@
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation. We hide it in small screens. -->
         <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link" href="./Poesie/poesie.component.html">Poesie</a>
-          <a class="mdl-navigation__link" href="./hinzufügen/hinzufügen.html">Hinzufügen</a>
           <a class="mdl-navigation__link" href="/">Bilder</a>
           <a class="mdl-navigation__link" href="/help">Hilfe</a>
-          <div class="drawer-option">
+          <div class="drawer-option"> <!-- Benachrichtuígung EIN Button 1x. enable-notifications = Sobald die Benachrichtigung aktiviert wird  -->
             <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
               Benachrichtigungen Ein
             </button>
           </div>
-          <div class="drawer-option">
+          <div class="drawer-option"> <!-- Button für die Installation der App -->
             <button id="install1" style="display:none;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent installButton">
               Installieren
             </button>
@@ -51,16 +49,14 @@
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">Progressive Poesie</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="./Poesie/poesie.component.html">Poesie</a>
-        <a class="mdl-navigation__link" href="./hinzufügen/hinzufügen.html">Hinzufügen</a>
         <a class="mdl-navigation__link" href="/">Bilder</a>
         <a class="mdl-navigation__link" href="/help">Hilfe</a>
-        <div class="drawer-option">
+        <div class="drawer-option"> <!-- Benachrichtigung Button EIN 2x. enable-notifications = Sobald die Benachrichtigung aktiviert wird -->
           <button class="enable-notifications mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
             Benachrichtigungen Ein
           </button>
         </div>
-        <div class="drawer-option">
+        <div class="drawer-option"> <!-- Button für die Installation der App -->
           <button id="install2" style="display:none;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent installButton">
             Installieren
           </button>
@@ -87,25 +83,25 @@
             <input class="mdl-textfield__input" type="text" id="location">
             <label class="mdl-textfield__label" for="location" name="location">Ort</label>
           </div>
-          <div class="input-section">
+          <div class="input-section"> <!-- Geolocation-API Button in der create function -->
             <button class="mdl-button mdl-js-button mdl-button--colored" type="button" id="location-btn">Location</button>
             <div class="mdl-spinner mdl-js-spinner is-active" id="location-loader"></div>
         </div>
-        <div id="map" class="map"></div>
+        <div id="map" class="map"></div>  <!-- Landkarte erscheint -->
           <div class="input-section mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="text">
             <label class="mdl-textfield__label" for="text" name="title">Text</label>
           </div>
        
           <br>
-          <div>
+          <div> <!--Speicher Button von Create Post-->
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent"
                     type="submit" id="post-btn">Speichern
             </button>
           </div>
        
           <br>
-          <div>
+          <div> <!--Close Button von Create Post-->
             <button class="mdl-button mdl-js-button mdl-button--fab" id="close-create-post-modal-btn" type="button">
               <i class="material-icons">close</i>
             </button>
@@ -158,7 +154,8 @@
           <i class="material-icons">add</i>
         </button>
       </div>
-      <div id="confirmation-toast" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+      <!-- Anzeige für das Synchron speichern der IndexDB -->
+      <div id="confirmation-toast" aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar"> 
         <div class="mdl-snackbar__text"></div>
         <button type="button" class="mdl-snackbar__action"></button>
       </div>
@@ -173,7 +170,7 @@
 <script src="/src/js/feed.js"></script>
 
 
-<script>
+<script> // zur Implentierung von Installation (Manifest.json)
   // Check that service workers are supported
   if ('serviceWorker' in navigator) {
   // Use the window load event to keep the page load performant
