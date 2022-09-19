@@ -14,3 +14,5 @@ router.post('/', async(req, res) => {
 });
 
 module.exports = router;
+
+// Endpunkt für Push Nachricht
