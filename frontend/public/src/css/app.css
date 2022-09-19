@@ -7,7 +7,7 @@
 }
 
 .enable-notifications {
-  display: none;
+  display: none; /* Sobald der Button einmal gedrückt worden ist, sollte er versteckt werden*/
 }
 
 * {
@@ -68,7 +68,6 @@ h2.mdl-card__title-text{
   height: 50%;
 
   /* Position and center the image to scale nicely on all screens */
-
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
