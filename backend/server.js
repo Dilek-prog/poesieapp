@@ -19,7 +19,7 @@ app.use('/posts', postsRoutes);
 app.use('/image', uploadRoutes);
 app.use('/download', downloadRoute);
 app.use('/delete', deleteRoute);
-app.use('/subscription', subscriptionRoute);
+app.use('/subscription', subscriptionRoute); 
 
 
 
