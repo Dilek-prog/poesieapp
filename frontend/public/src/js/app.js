@@ -1,4 +1,4 @@
-let enableNotificationsButtons = document.querySelectorAll('.enable-notifications'); //Variable, die auf ein Array aller Button mit der CSS klasse .. zeigt
+let enableNotificationsButtons = document.querySelectorAll('.enable-notifications'); //Variable, die auf ein Array aller Button mit der CSS klasse enable-notifications zeigt
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
@@ -13,9 +13,9 @@ if ('serviceWorker' in navigator) {
 
 function displayConfirmNotification() { // Erlauben von Nachricht 
 
-    if('serviceWorker' in navigator) {
+    if('serviceWorker' in navigator) { // Push-Nachrichten durch Service Worker 
         let options = {
-            body: 'You successfully subscribed to our Notification service!',
+            body: 'You successfully subscribed to our Notification service!', // Wie die Benachrichtigug aussieht und ihre Inhalte 
             icon: '/src/images/icons/fiw96x96.png',
             image: '/src/images/htw-sm.jpg',
             lang: 'de-DE',
@@ -30,7 +30,7 @@ function displayConfirmNotification() { // Erlauben von Nachricht
         };
 
         navigator.serviceWorker.ready
-            .then( sw => {
+            .then( sw => { //SW heißt das die Nachricht vom Service Worker kommt
                 sw.showNotification('Successfully subscribed (from SW)!', options);
             });
     }
@@ -51,12 +51,12 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-function configurePushSubscription() {
+function configurePushSubscription() { // registrieren von Push-Nachrichten 
     if(!('serviceWorker' in navigator)) {
         return
     }
 
-    let swReg;
+    let swReg; // Erzeugen einer Subscription 
     navigator.serviceWorker.ready
         .then( sw => {
             swReg = sw;
@@ -96,19 +96,19 @@ function configurePushSubscription() {
         });
 }
 
-function askForNotificationPermission() { //Klickereignis, wenn der Browser die API unterstützt, wird sie verwendet 
-    Notification.requestPermission( result => {
+function askForNotificationPermission() { //Klickereignis, wenn der Browser die API unterstützt, wird sie verwendet. 
+    Notification.requestPermission( result => { // Mit requestPermission() wird die Nutzerin gefragt, ob sie die Nachrichten zulassen möchte. 
         console.log('User choice', result);
-        if(result !== 'granted') {
-            console.log('No notification permission granted');
+        if(result !== 'granted') { 
+            console.log('No notification permission granted'); // Werden Benachrichtugung nicht erlaubt, können wir nichts weiter tun. Die Nutzerin wird dann auch nicht erneut gefragt
         } else {
            // displayConfirmNotification();
-           configurePushSubscription(); // erlaubnis von Push nachrichten 
+           configurePushSubscription(); // erlaubnis von Nutzerin für die  Pushnachrichten 
         }
     });
 }
 
-if('Notification' in window && 'serviceWorker' in navigator) { //prüft, ob der Browser Notification API unterstützt
+if('Notification' in window && 'serviceWorker' in navigator) { //prüft, ob der Browser Notification API unterstützt. Wenn ja, dann schalten wir alle Buttons aus dem enableNotificationsButtons-Array wieder auf sichtbar und melden diesen Button an ein Click Ereignis an.
     for(let button of enableNotificationsButtons) {
         button.style.display = 'inline-block';
         button.addEventListener('click', askForNotificationPermission);

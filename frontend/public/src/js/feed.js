@@ -3,31 +3,31 @@ let createPostArea = document.querySelector('#create-post');
 let closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 let sharedMomentsArea = document.querySelector('#shared-moments');
 let cardTemplate = document.querySelector('#poesie-card-template');
-let form = document.querySelector('form');
-let titleInput = document.querySelector('#title');
-let locationInput = document.querySelector('#location');
-let textInput = document.querySelector('#text');
-let videoPlayer = document.querySelector('#player');
-let canvasElement = document.querySelector('#canvas');
-let captureButton = document.querySelector('#capture-btn');
-let imagePicker = document.querySelector('#image-picker');
-let imagePickerArea = document.querySelector('#pick-image');
+let form = document.querySelector('form'); // Eingabe im Create-Post für Bild
+let titleInput = document.querySelector('#title');// Eingabe im Create-Post für Title
+let locationInput = document.querySelector('#location');// Eingabe im Create-Post für Location 
+let textInput = document.querySelector('#text'); // Eingabe im Create-Post für Text
+let videoPlayer = document.querySelector('#player'); // Kammera Zugriff
+let canvasElement = document.querySelector('#canvas'); // Kammera Zugriff
+let captureButton = document.querySelector('#capture-btn'); // Kammera Zugriff
+let imagePicker = document.querySelector('#image-picker'); // Kammera Zugriff
+let imagePickerArea = document.querySelector('#pick-image'); // Kammera Zugriff
 let locationButton = document.querySelector('#location-btn'); // Zugriff auf Location Button
 let locationLoader = document.querySelector('#location-loader'); // Zugriff auf Location Button
-let mapDiv = document.querySelector('.map');
+let mapDiv = document.querySelector('.map'); // Für die Map
 let fetchedLocation;  // Zugriff auf Location Button
-let file = null;
+let file = null; // Erhalten wir erst nach dem wir die Kamera aktiviert haben
 let titleValue = '';
 let locationValue = '';
-let imageURI = '';
+let imageURI = ''; // Erhalten wir erst nach dem wir die Kamera aktiviert haben
 let textValue = '';
 
-function initializeMedia() {
+function initializeMedia() { // Abfrage, ob ein  MediaDevices-API unterstützt wird
   if(!('mediaDevices' in navigator)) {
     navigator.mediaDevices = {};
 }
 
-if(!('getUserMedia' in navigator.mediaDevices)) {
+if(!('getUserMedia' in navigator.mediaDevices)) { // falls MediaDevices-API nicht unterstützt wird, mit dieser Funktion ein eigenes erstellem
     navigator.mediaDevices.getUserMedia = function(constraints) {
         let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -52,16 +52,16 @@ navigator.mediaDevices.getUserMedia({video: true}) //Kamera Zugriff
 }
 
 function openCreatePostModal() {
-  setTimeout( () => {
+  setTimeout( () => { // Schließen des Post fließend
     createPostArea.style.transform = 'translateY(0)';
 }, 1);
-  initializeMedia();
-  initializeLocation();
+  initializeMedia(); // Abfrage für die Kamera 
+  initializeLocation(); // Abfrage für den Standort 
 }
 
 function closeCreatePostModal() {
   createPostArea.style.transform = 'translateY(100vH)';
-  imagePickerArea.style.display = 'none'; // Sobald kein Foto gemacht werden möchte, kommt der Zugriff auf den Desktop
+  imagePickerArea.style.display = 'none'; // Sobald kein Foto gemacht werden möchte, kommt der Zugriff auf das Desktop
   videoPlayer.style.display = 'none';
   canvasElement.style.display = 'none';
   locationButton.style.display = 'inline';
@@ -69,7 +69,7 @@ function closeCreatePostModal() {
   if(videoPlayer.srcObject) {
     videoPlayer.srcObject.getVideoTracks().forEach( track => track.stop());
 }
-  setTimeout( () => {
+  setTimeout( () => { // Schließen des Post fließend
     createPostArea.style.transform = 'translateY(100vH)';
 }, 1);
 }
@@ -91,10 +91,16 @@ function createCard(card) { // Komplettes Tamplett erichtet für die Posts
     delete_button_clicked(card._id)
   };
   componentHandler.upgradeElement(clone.querySelector('.mdl-card'));
+  clone.querySelector(".card-center-wrapper").id = "card-"+card._id;
+  
+  oldcard = sharedMomentsArea.querySelector("#card-"+card._id);
+  if (oldcard) {
+    oldcard.remove();
+  }
+
   sharedMomentsArea.appendChild(clone);
-
-
 }
+
 let networkDataReceived = false;
 
 fetch('http://localhost:3000/posts')
@@ -110,7 +116,7 @@ fetch('http://localhost:3000/posts')
 function updateUI(data) {
   console.log("Update UI ...");
   console.log(data);
-  sharedMomentsArea.innerHTML='';
+  // sharedMomentsArea.innerHTML='';
   for(let card of data)
   {
      createCard(card);
@@ -129,7 +135,7 @@ if('indexedDB' in window) {
       })
 }
 
-form.addEventListener('submit', event => { //triggert backend an 
+form.addEventListener('submit', event => { //triggert backend an um einen Post zu senden
 event.preventDefault(); // nicht absenden und neu laden
 
   if (titleInput.value.trim() === '' || locationInput.value.trim() === '') { // nimmt die Leehrzeichen am Ende weg --> prüft die Eingabe, ob etwas frei gelassen wurde 
@@ -137,7 +143,7 @@ event.preventDefault(); // nicht absenden und neu laden
       return;
   }
 
-  closeCreatePostModal();
+  closeCreatePostModal(); // Schließt Create-Post 
 });
 
 function sendDataToBackend() { // Das fertige Formular absenden an an GET 
@@ -192,22 +198,22 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
   console.log('textInput', textValue)
   console.log('file', file)
 
-  if('serviceWorker' in navigator && 'SyncManager' in window) {
+  if('serviceWorker' in navigator && 'SyncManager' in window) { // Unterstützung vo Service Worker und co? Window ist das Fenster, das ein DOM Dokument (also eine Webanwendung) enthält. Eine Eigenschaft von window ist navigator
     navigator.serviceWorker.ready
         .then( sw => {
             let post = {
-                id: new Date().toISOString(),
+                id: new Date().toISOString(), // Id wurde hinzugefügt,um einen eindeutigen Identifier für den post in der IndexedDB zu haben (Zeitstempel)
                 title: titleValue,
                 location: locationValue,
                 text: textValue,
-                image_id: file
+                image_id: file // Foto belegt 
             };
 
             writeData('sync-posts', post)
                 .then( () => {
-                    return sw.sync.register('sync-new-post');
+                    return sw.sync.register('sync-new-post'); //registrieren vom neuen Post 
                 })
-                .then( () => {
+                .then( () => { // Slide Hintergrundsynchronisation
                     console.log("creating confirmation toast ...");
                     let snackbarContainer = new MaterialSnackbar(document.querySelector('#confirmation-toast'));
                     let data = { message: 'Eingaben zum Synchronisieren gespeichert!', timeout: 2000};
@@ -217,19 +223,18 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
                 });
         });
     } else {
-        sendDataToBackend();
+        sendDataToBackend(); // die Ereignisse an das Backend schicken
     }
 });
 
 function delete_button_clicked(id){
   console.log("Delete Button Clicked id:", id);
+  document.querySelector("#card-"+id)?.remove()
   fetch('http://localhost:3000/posts/' + id, {
       method: 'Delete',
-      
   })
   .then( response => {
-    console.log('response to delete request : ', response),
-    delayedUpdate();
+    console.log('response to delete request : ', response);
   })
   
 }
@@ -248,13 +253,14 @@ function delayedUpdate(){
   }, 2000);
 }
 
+// Klick Ereignis von Foto-Button
 captureButton.addEventListener('click', event => {
   event.preventDefault(); // nicht absenden und neu laden
   canvasElement.style.display = 'block';
   videoPlayer.style.display = 'none';
   captureButton.style.display = 'none';
   let context = canvasElement.getContext('2d');
-  context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width));
+  context.drawImage(videoPlayer, 0, 0, canvas.width, videoPlayer.videoHeight / (videoPlayer.videoWidth / canvas.width)); // Das Bild, Koordinate von linken oberen Punktes, breites des bildes, Höhe des Bildes 
   videoPlayer.srcObject.getVideoTracks().forEach( track => {
     track.stop();
 })
@@ -271,27 +277,27 @@ captureButton.addEventListener('click', event => {
   })
 });
 
-imagePicker.addEventListener('change', event => {
-  file = event.target.files[0];
+imagePicker.addEventListener('change', event => { //Hochladen einer Bilddatei
+  file = event.target.files[0]; 
 });
 
 
-locationButton.addEventListener('click', event => {
+locationButton.addEventListener('click', event => { // Abfrage des Klick Ereignis für location 
   if(!('geolocation' in navigator)) {
       return;
   }
 
-  locationButton.style.display = 'none';
-  locationLoader.style.display = 'block';
+  locationButton.style.display = 'none'; // Wenn der Button aktzeptiert wurde, dann soll er unsichtbar sein 
+  locationLoader.style.display = 'block'; // Sichtbarkeit des Loader
 
-  navigator.geolocation.getCurrentPosition( position => {
-      locationButton.style.display = 'inline';
-      locationLoader.style.display = 'none';
+  navigator.geolocation.getCurrentPosition( position => { // eigentiches Aufrufen der GEO-API
+      locationButton.style.display = 'inline'; // Wenn die aktuelle Position ausgerufen wird, dann wird der Button wieder sichtbar 
+      locationLoader.style.display = 'none'; // Der Loader, dann wieder auf unsichtbar 
       fetchedLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       console.log('current position: ', fetchedLocation);
 
       let nominatimURL = 'https://nominatim.openstreetmap.org/reverse'; 
-      nominatimURL += '?format=jsonv2';   // format=[xml|json|jsonv2|geojson|geocodejson]
+      nominatimURL += '?format=jsonv2';   // format=[xml|json|jsonv2|geojson|geocodejson] Hier wird die URL ermittelt 
       nominatimURL += '&lat=' + fetchedLocation.latitude;
       nominatimURL += '&lon=' + fetchedLocation.longitude;
 
@@ -310,16 +316,16 @@ locationButton.addEventListener('click', event => {
           locationLoader.style.display = 'none';
           mapDiv.style.display = 'block';
 
-          const map = new ol.Map({ //map erstellen
+          const map = new ol.Map({ // neue map erstellen
               target: 'map',
               layers: [
               new ol.layer.Tile({
                   source: new ol.source.OSM()
               })
               ],
-              view: new ol.View({
+              view: new ol.View({ // eigentliche Karten Ansicht 
               center: ol.proj.fromLonLat([fetchedLocation.longitude, fetchedLocation.latitude]),
-              zoom: 12
+              zoom: 12 // Je höher das zoom-Level, je höher wird hineingezoomt. Zoom-Level 0 zeigt die Welt.
               })
           });
 
@@ -344,7 +350,7 @@ locationButton.addEventListener('click', event => {
 
       document.querySelector('#manual-location').classList.add('is-focused');
 
-  }, err => {
+  }, err => { // falls ein Error entsteht, wie zum Beispiel, dass der Nutzer den Standort nicht zu lässt. Oder das die Position nicht schnell genug ermittelt wurde
       console.log(err);
       locationButton.style.display = 'inline';
       locationLoader.style.display = 'none';
@@ -353,7 +359,7 @@ locationButton.addEventListener('click', event => {
   }, { timeout: 5000});
 });
 
-function initializeLocation() { // hier wird geprüft, ob der Browser Geolacation-API unterstützt 
+function initializeLocation() { // hier wird geprüft, ob der Browser Geolacation-API unterstützt, wenn nicht wird der Button versteckt 
   if(!('geolocation' in navigator)) {
       locationButton.style.display = 'none';
   }
