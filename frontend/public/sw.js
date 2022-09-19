@@ -100,6 +100,7 @@ self.addEventListener('fetch', event => {
 
 //workbox.routing.registerRoute  ({request}) => request.destination === 'image', new workbox.strategies.NetworkFirst()     // NetworkFirst() vs CacheFirst())
 
+// Die Daten an das Backend Senden sobald der Post gepostet werden soll
 self.addEventListener('sync', event => {
     console.log('service worker --> background syncing ...', event);
     if(event.tag === 'sync-new-post') {
@@ -167,7 +168,7 @@ self.addEventListener('notificationclick', event => {
     }
 });
 
-self.addEventListener('notificationclose', event => {
+self.addEventListener('notificationclose', event => { // Service Worker kann das Ereignis behandeln, das ausgelöst wird, wenn eine Benachrichtigung geschlossen wird
     console.log('notification was closed', event);
 });
 
@@ -181,7 +182,7 @@ self.addEventListener('push', event => {
 
     let options = {
         body: data.content,
-        icon: '/src/images/icons/fiw96x96.png',
+        icon: '/src/images/icons/fiw96x96.png'
     };
 
     event.waitUntil(
