@@ -72,10 +72,10 @@ function configurePushSubscription() { // registrieren von Push-Nachrichten
                 });
             } else {
                 //falls es exsistiert aber neu erstellt werden soll
-                // sub.unsubscribe()
-                // .then( () => {
-                //     console.log('unsubscribed()', sub)
-                // }) 
+                sub.unsubscribe()
+                .then( () => {
+                    console.log('unsubscribed()', sub)
+                }) 
             }
         })
         .then( newSub => {
@@ -104,6 +104,9 @@ function askForNotificationPermission() { //Klickereignis, wenn der Browser die 
         } else {
            // displayConfirmNotification();
            configurePushSubscription(); // erlaubnis von Nutzerin für die  Pushnachrichten 
+           for(let button of enableNotificationsButtons) {
+                button.style.display = 'none';
+            }
         }
     });
 }

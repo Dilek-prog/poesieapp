@@ -52,6 +52,10 @@ navigator.mediaDevices.getUserMedia({video: true}) //Kamera Zugriff
 }
 
 function openCreatePostModal() {
+  document.querySelector("#text").value = "";
+  document.querySelector("#title").value = "";
+  document.querySelector("#location").value = "";
+  document.querySelector("#image-picker").value = "";
   setTimeout( () => { // Schließen des Post fließend
     createPostArea.style.transform = 'translateY(0)';
 }, 1);
