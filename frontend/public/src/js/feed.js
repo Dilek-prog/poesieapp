@@ -2,7 +2,7 @@ let shareImageButton = document.querySelector('#share-image-button');
 let createPostArea = document.querySelector('#create-post');
 let closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 let sharedMomentsArea = document.querySelector('#shared-moments');
-let cardTemplate = document.querySelector('#poesie-card-template');
+let cardTemplate = document.querySelector('#poesie-card-template'); // Create Tamplet
 let form = document.querySelector('form'); // Eingabe im Create-Post für Bild
 let titleInput = document.querySelector('#title');// Eingabe im Create-Post für Title
 let locationInput = document.querySelector('#location');// Eingabe im Create-Post für Location 
@@ -59,7 +59,7 @@ function openCreatePostModal() {
   initializeLocation(); // Abfrage für den Standort 
 }
 
-function closeCreatePostModal() {
+function closeCreatePostModal() { // für die Kamera 
   createPostArea.style.transform = 'translateY(100vH)';
   imagePickerArea.style.display = 'none'; // Sobald kein Foto gemacht werden möchte, kommt der Zugriff auf das Desktop
   videoPlayer.style.display = 'none';
@@ -88,7 +88,7 @@ function createCard(card) { // Komplettes Tamplett erichtet für die Posts
   clone.querySelector('.template-title-wrapper').style.backgroundImage='url('+ image.src +')';
   clone.querySelector('.card-delete-icon').onclick = function () { 
     console.log("Delte Event triggered");
-    delete_button_clicked(card._id)
+    delete_button_clicked(card._id) // Löschen anhand der jeweiligen ID
   };
   componentHandler.upgradeElement(clone.querySelector('.mdl-card'));
   clone.querySelector(".card-center-wrapper").id = "card-"+card._id;
