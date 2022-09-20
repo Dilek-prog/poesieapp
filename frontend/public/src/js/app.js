@@ -64,18 +64,18 @@ function configurePushSubscription() { // registrieren von Push-Nachrichten
         })
         .then( sub => {
             if(sub === null) {
-                let vapidPublicKey = 'BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0';
+                let vapidPublicKey = 'BJSKcy_aKU3MwaTgiDwWMawhcudji4-1ei8ujE9o_x29VgB3z6GWjEUh2J6dG6rZ5pegAn1huu1ijyfotOp5o34';
                 let convertedVapidPublicKey = urlBase64ToUint8Array(vapidPublicKey);
                 return swReg.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: convertedVapidPublicKey,
                 });
             } else {
-                // falls es exsistiert aber neu erstellt werden soll
-                sub.unsubscribe()
-                .then( () => {
-                    console.log('unsubscribed()', sub)
-                }) 
+                //falls es exsistiert aber neu erstellt werden soll
+                // sub.unsubscribe()
+                // .then( () => {
+                //     console.log('unsubscribed()', sub)
+                // }) 
             }
         })
         .then( newSub => {
