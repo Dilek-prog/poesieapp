@@ -3,6 +3,7 @@ const webpush = require('web-push');
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/posts');
+const Subscription = require('../models/subscriptions');
 const upload = require('../middleware/upload');
 require('dotenv').config()
 const mongoose = require('mongoose');
@@ -13,14 +14,14 @@ const collectionChunks = connect.collection('posts.chunks');
 
 const publicVapidKey = 'BJSKcy_aKU3MwaTgiDwWMawhcudji4-1ei8ujE9o_x29VgB3z6GWjEUh2J6dG6rZ5pegAn1huu1ijyfotOp5o34';
 const privateVapidKey = 'jbJQGSqE91Zyw6yj39_7C-ky5-GP5M2ikSjWfFBi12A';
-const pushSubscription ={
-    endpoint: 'https://fcm.googleapis.com/fcm/send/eeCwVo1K8EA:APA91bFvibdFBK6X_ctPkaPzoAc9CzBmJPLQes2Pf80GG1SjcrKAUTMwHoRHS7f_cl_mC5zwKA-skv9NzB16Cqlmxc0jz9OWRtyZW3m3ZBEkqYSyU8-LA6PGRedeuUAJ4wa7lMjLYLWd',
-    expirationTime: null,
-    keys: {
-      p256dh: 'BHjo1XhvIMzZAQihuQXeg3zmWui-WEUcINrU67bvduqOKwiDmFnSYgBJ2pxY46FIfEyXgHaxJ6vDYiPi7mb4VjI',
-      auth: 'xy1vo68cBeEVkOFZJjfO7w'
-    }
-  }
+// const pushSubscription ={
+//     endpoint: 'https://fcm.googleapis.com/fcm/send/eeCwVo1K8EA:APA91bFvibdFBK6X_ctPkaPzoAc9CzBmJPLQes2Pf80GG1SjcrKAUTMwHoRHS7f_cl_mC5zwKA-skv9NzB16Cqlmxc0jz9OWRtyZW3m3ZBEkqYSyU8-LA6PGRedeuUAJ4wa7lMjLYLWd',
+//     expirationTime: null,
+//     keys: { 
+//       p256dh: 'BHjo1XhvIMzZAQihuQXeg3zmWui-WEUcINrU67bvduqOKwiDmFnSYgBJ2pxY46FIfEyXgHaxJ6vDYiPi7mb4VjI',
+//       auth: 'xy1vo68cBeEVkOFZJjfO7w'
+//     }
+//  }
   
   
   
@@ -34,9 +35,31 @@ const pushSubscription ={
         content: 'Auf progressive poesie wurde ein neues Gedicht veröffentlicht.',
         openUrl: '/'
     });
-    webpush.sendNotification(pushSubscription,payload)
-        .catch(err => console.error(err));
-    console.log('push notification sent');
+
+    // alle subscriptions aus der mongodb holen
+    Subscription.find().exec().then(allSubscriptions => {
+        console.log('allsubscriptions', allSubscriptions);
+        // alle subscriptions durchgehen
+        for(const subscription of allSubscriptions) {
+            
+            // pushSubscription mit den Werten aus der MongoDB füllen
+            pushSubscription = {
+                endpoint : subscription.endpoint,
+                expirationTime : null,
+                keys : {
+                    p256dh: subscription.p256dh,
+                    auth: subscription.auth
+                }
+            }
+    
+            // notification absenden
+            webpush.sendNotification(pushSubscription,payload)
+            .catch(err => console.error(err));
+            console.log('push notification sent');
+        }
+    })
+    
+
    // res.status(201).json({ message: 'push notification sent'});
 }
 
@@ -189,7 +212,9 @@ router.delete('/:id', async(req, res) => {
         let fileName = post.image_id;
         await Post.deleteOne({ _id: req.params.id });
         await collectionFiles.find({filename: fileName}).toArray( async(err, docs) => {
-            await collectionChunks.deleteMany({files_id : docs[0]._id});
+            if(docs[0]) { //  Nur Löschen, wenn das Dokument noch exsistiert 
+                await collectionChunks.deleteMany({files_id : docs[0]._id});
+            }
         })
         await collectionFiles.deleteOne({filename: fileName});
         res.status(204).send()
