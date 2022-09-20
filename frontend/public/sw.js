@@ -55,7 +55,7 @@ self.addEventListener('fetch', event => {
     // if request is made for web page url must contains http.
     if (!(event.request.url.indexOf('http') === 0)) return; // skip the request. if request is not made with http protocol
 
-    const url = 'http://localhost:3000/posts';
+    const url = '/api/posts';
     if(event.request.url.indexOf(url) >= 0) {
         console.log('event.request', event.request)
         event.respondWith( 
@@ -118,7 +118,7 @@ self.addEventListener('sync', event => {
 
                         console.log('formData-sw', formData);
 
-                        fetch('http://localhost:3000/posts', {
+                        fetch('/api/posts', {
                             method: 'POST',
                             body: formData
                         })

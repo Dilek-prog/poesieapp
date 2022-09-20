@@ -107,7 +107,7 @@ function createCard(card) { // Komplettes Tamplett erichtet für die Posts
 
 let networkDataReceived = false;
 
-fetch('http://localhost:3000/posts')
+fetch('/api/posts')
 .then((res) => {
     return res.json();
 })
@@ -159,7 +159,7 @@ function sendDataToBackend() { // Das fertige Formular absenden an an GET
 
   console.log('formData', formData)
 
-  fetch('http://localhost:3000/posts', {
+  fetch('/api/posts', {
       method: 'POST',
       body: formData
   })
@@ -234,7 +234,7 @@ form.addEventListener('submit', event => { // Funktion für den Speicherbutton
 function delete_button_clicked(id){
   console.log("Delete Button Clicked id:", id);
   document.querySelector("#card-"+id)?.remove()
-  fetch('http://localhost:3000/posts/' + id, {
+  fetch('/api/posts/' + id, {
       method: 'Delete',
   })
   .then( response => {
@@ -245,7 +245,7 @@ function delete_button_clicked(id){
 
 function delayedUpdate(){
   setTimeout( () => {
-    fetch('http://localhost:3000/posts')
+    fetch('/api/posts')
     .then((res) => {
       return res.json();
     })

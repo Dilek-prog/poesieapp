@@ -79,7 +79,7 @@ function configurePushSubscription() { // registrieren von Push-Nachrichten
             }
         })
         .then( newSub => {
-            return fetch('http://localhost:3000/subscription', {
+            return fetch('/api/subscription', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -114,7 +114,7 @@ function getAllPosts() {
                 const onePost = await getOnePost(post._id);
                 sendAllPosts.push(onePost);
             }
-            // console.log('sendAllPosts', sendAllPosts)
+            console.log('sendAllPosts', sendAllPosts)
             resolve(sendAllPosts)
         } catch {
                 reject(new Error("Posts do not exist!"));
