@@ -25,9 +25,9 @@ router.get('/show/:filename', async(req, res) => {
     try {
         const cursor = await gfs.collection('posts').find({ filename: req.params.filename });
         cursor.forEach(doc => {
-            console.log('doc', doc);
+            //console.log('doc', doc);
               const id = doc._id.valueOf();
-              console.log('doc._id', id);
+              //console.log('doc._id', id);
             gfsb.openDownloadStream(doc._id).pipe(res);
         })
     } catch (error) {
@@ -59,7 +59,7 @@ router.get('/send/:filename', async(req, res) => {
                   return res.send({title: 'Download Error', message: 'No file found'});
               } else {
                   //Retrieving the chunks from the db
-                  console.log('docs[0]._id', docs[0]._id)
+                  //console.log('docs[0]._id', docs[0]._id)
                   collectionChunks.find({files_id : docs[0]._id}).sort({n: 1}).toArray( (err, chunks) => {
                       if(err){
                           return res.send({title: 'Download Error', message: 'Error retrieving chunks', error: err.errmsg});
@@ -72,7 +72,7 @@ router.get('/send/:filename', async(req, res) => {
                       //Append Chunks
                       let fileData = [];
                       for(let chunk of chunks){
-                          console.log('chunk', chunk)
+                          //console.log('chunk', chunk)
                           //This is in Binary JSON or BSON format, which is stored
                           //in fileData array in base64 endocoded string format
                           fileData.push(chunk.data.toString('base64'));
