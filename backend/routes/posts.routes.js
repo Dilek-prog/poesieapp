@@ -11,25 +11,28 @@ const connect = mongoose.createConnection(process.env.DB_CONNECTION, { useNewUrl
 const collectionFiles = connect.collection('posts.files');
 const collectionChunks = connect.collection('posts.chunks');
 
-const publicVapidKey = 'BFB76R73jww6Z2GFL-eujsAFbTVRMW7ZN6WPMbTzl943qvIg_p0TdyAvJo9mh0CRmjJRMn3liIyC3kYZGqpXJR0';
-const privateVapidKey = 'm9GRo47n3HKKzgvZYpr_8TFkvCKC6P1Zg_CKyDe8sgU';
+const publicVapidKey = 'BJSKcy_aKU3MwaTgiDwWMawhcudji4-1ei8ujE9o_x29VgB3z6GWjEUh2J6dG6rZ5pegAn1huu1ijyfotOp5o34';
+const privateVapidKey = 'jbJQGSqE91Zyw6yj39_7C-ky5-GP5M2ikSjWfFBi12A';
 const pushSubscription ={
-        endpoint: 'https://fcm.googleapis.com/fcm/send/cEroN3XyO-s:APA91bHJJQS4pM0hLOwEMZEzpQR1NtsKYZQuU80NdBvEdPnzj7wASMZ_zlKVSkkRdXnETHd_3tyTphVD03E__oan-AeQ_w1dGL9q6VsLwu_PEHmmGUh3WmfNxN57Tr4BBO7pwutVj01e',
-        expirationTime: null,
-        keys: {
-          p256dh: 'BDu_Pz1MmK5DgVbLH9gkfqKuqA3EVXlDsGtP7i4ONkf5v0WBxiKfr0iHIbnsmxtgPm5dazWv26ywjrwWY3hwGY0',
-          auth: 'BGwfQPKRf42FRa9NlO8aIg'
-        
-      }
+    endpoint: 'https://fcm.googleapis.com/fcm/send/eeCwVo1K8EA:APA91bFvibdFBK6X_ctPkaPzoAc9CzBmJPLQes2Pf80GG1SjcrKAUTMwHoRHS7f_cl_mC5zwKA-skv9NzB16Cqlmxc0jz9OWRtyZW3m3ZBEkqYSyU8-LA6PGRedeuUAJ4wa7lMjLYLWd',
+    expirationTime: null,
+    keys: {
+      p256dh: 'BHjo1XhvIMzZAQihuQXeg3zmWui-WEUcINrU67bvduqOKwiDmFnSYgBJ2pxY46FIfEyXgHaxJ6vDYiPi7mb4VjI',
+      auth: 'xy1vo68cBeEVkOFZJjfO7w'
     }
+  }
+  
+  
+  
+    
 
   
   function sendNotification() {
     webpush.setVapidDetails('mailto:DilekOgur2253@gmail.com', publicVapidKey, privateVapidKey);
     const payload = JSON.stringify({
         title: 'Neue Poesie',
-        content: 'Auf progressive poesie wurde ein neues Gedicht veröffentlicht.'
-        //openUrl: '/help'
+        content: 'Auf progressive poesie wurde ein neues Gedicht veröffentlicht.',
+        openUrl: '/'
     });
     webpush.sendNotification(pushSubscription,payload)
         .catch(err => console.error(err));
@@ -84,11 +87,11 @@ function getAllPosts() {
         const allPosts = await Post.find();
         try {
             for(const post of allPosts) {
-                console.log('post', post)
+                // console.log('post', post)
                 const onePost = await getOnePost(post._id);
                 sendAllPosts.push(onePost);
             }
-            console.log('sendAllPosts', sendAllPosts)
+            // console.log('sendAllPosts', sendAllPosts)
             resolve(sendAllPosts)
         } catch {
                 reject(new Error("Posts do not exist!"));
@@ -128,7 +131,7 @@ router.post('/', upload.single('file'), async(req, res) => {
         })
         await newPost.save();
         sendNotification();
-        console.log("Returning new post:", newPost);
+        // console.log("Returning new post:", newPost);
         return res.send(newPost);
     }
 })
@@ -138,7 +141,7 @@ router.get('/:id', async(req, res) => {
     console.log("Trying to get post: ", req.params.id);
     getOnePost(req.params.id)
     .then( (post) => {
-        console.log('post', post);
+        // console.log('post', post);
         res.send(post);
     })
     .catch( () => {

@@ -13,3 +13,17 @@ m9GRo47n3HKKzgvZYpr_8TFkvCKC6P1Zg_CKyDe8sgU
 
 =======================================
 
+
+> backend@1.0.0 web-push
+> web-push "generate-vapid-keys"
+
+
+=======================================
+
+Public Key:
+BJSKcy_aKU3MwaTgiDwWMawhcudji4-1ei8ujE9o_x29VgB3z6GWjEUh2J6dG6rZ5pegAn1huu1ijyfotOp5o34
+
+Private Key:
+jbJQGSqE91Zyw6yj39_7C-ky5-GP5M2ikSjWfFBi12A
+
+=======================================
