@@ -4,15 +4,11 @@ services:
         build: frontend/
         command: npm start
         ports: 
-            - "4567:8080"
+            - "80:8080"
     backend:
         build: backend/
         command: npm run watch
-        ports: 
-            - "3000:3000"
     mongodb:
         image: mongo:latest
-        ports:
-            - 27017:27017
         volumes:
             - ./db:/data/db
