@@ -6,7 +6,7 @@ const CACHE_VERSION = 4;
 const CURRENT_STATIC_CACHE = 'static-v'+CACHE_VERSION;
 const CURRENT_DYNAMIC_CACHE = 'dynamic-v'+CACHE_VERSION;
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', event => { // für den Service Worker
     console.log('service worker --> activating ...', event);
     event.waitUntil(
         caches.keys()
@@ -38,7 +38,7 @@ const STATIC_FILES = [
     'https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css'
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', event => {  // Service Worker wird aktiv
     console.log('service worker --> installing ...', event);
     event.waitUntil(
         caches.open(CURRENT_STATIC_CACHE)
@@ -50,7 +50,7 @@ self.addEventListener('install', event => {
 })
 
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', event => { 
     // check if request is made by chrome extensions or web page
     // if request is made for web page url must contains http.
     if (!(event.request.url.indexOf('http') === 0)) return; // skip the request. if request is not made with http protocol
@@ -58,8 +58,8 @@ self.addEventListener('fetch', event => {
     const url = 'http://localhost:3000/posts';
     if(event.request.url.indexOf(url) >= 0) {
         console.log('event.request', event.request)
-        event.respondWith(
-            fetch(event.request)
+        event.respondWith( 
+            fetch(event.request) //sorgt einerseits dafür, den Browser von seiner Standardbehandlung des FetchEvents abzuhalten und stattdessen eine eigene Promise für die Behandlung des FetchEvents zu definieren
                 .then ( res => {
                     if(event.request.method === 'GET') {
                         const clonedResponse = res.clone();
@@ -157,10 +157,10 @@ self.addEventListener('notificationclick', event => {
                     });
 
                     if(client !== undefined) {
-                        client.navigate('http://localhost:8080');
+                        client.navigate(notification.data.url);
                         client.focus();
                     } else {
-                        clients.openWindow('http://localhost:8080');
+                        clients.openWindow(notification.data.url);
                     }
                     notification.close();
                 })
@@ -175,14 +175,17 @@ self.addEventListener('notificationclose', event => { // Service Worker kann das
 
 self.addEventListener('push', event => {
     console.log('push notification received', event);
-    let data = { title: 'Test', content: 'Fallback message'};
+    let data = { title: 'Test', content: 'Fallback message', openUrl: '/'};
     if(event.data) {
         data = JSON.parse(event.data.text());
     }
 
     let options = {
         body: data.content,
-        icon: '/src/images/icons/fiw96x96.png'
+        icon: '/src/images/icons/fiw96x96.png',
+        data: {
+            url: data.openUrl
+        }
     };
 
     event.waitUntil(
