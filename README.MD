@@ -1,4 +1,4 @@
-# Poesie liebhaber aufgepasst!
+# Poesie liebhaber Aufgepasst!
 *Mit der Poesie App können Poesie liebhaber ihre eigenen Poesie Texte posten. Sie können sich aber auch ganz einfach von anderen Poesie texten inspieren lasssen!*
 
 Im Rahmen meines Studiums "Informatik und Wirtschaft" und das Modul "IKT - Aktuelle Trends der Informations- und Kommunikationstechnik" habe ich eine Progressive Web Application entwickelt. Mit meiner eigenen Idee zur einer Poesie App und den Vorgelegten Skripten meines Professors habe ich alle Anforderungen eindecken können und die App anschließlich Deployen können. 
