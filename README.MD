@@ -5,8 +5,7 @@ Im Rahmen meines Studiums "Informatik und Wirtschaft" und das Modul "IKT - Aktue
 
 ## Installation
 
-- Zur Ausführung des Projektes wurde [Node.js](https://nodejs.org) verendet. Die verwendung von Docker Desktop und MongoDB Compast wurde ebenfalls verwendet.
-***
+Zur Ausführung des Projektes wurde [Node.js](https://nodejs.org) verendet. Die verwendung von Docker Desktop und MongoDB Compast wurde ebenfalls verwendet.
 
 ## Anwendung 
 
@@ -18,10 +17,11 @@ Sobald eine Poesie gepostet werden soll, wird der Nutzer vorher gefragt, ob Sie 
 Nachdem ich diesen Prozess vollständig hinbekommen habe, habe ich mich mit der Delete funktion beschäftigt. Ich wollte, dass man die Posts löschen kann ohne das Postman benutzt wird. Nachdem der Reload von neu erworbenen Post ständig kläglich gescheitert ist habe ich mich intensive damit beschäftigt, wie es denn noch klappen könnte! Sobald ein Post gepostet wird, wird der Post nach 2 Sekunden erscheinen und die weiteren Anwender bekommen zwar ihre Push-Notifikation doch erst nach den Sekunden erhalten sie den eigentlichen Post dazu. Oder sie Klicken auf die Push-Notifikation und gelangen so zu dem neuem Post. Sobald ein Post ohne Internet gepostet wird, wird der Post im "Hintergrund" abgespeichert und erst wieder neu geladen, sobald wieder Internet vorhanden ist.
 Ich habe meinen Backend umgeschaltet, dass das Frontend nicht mehr auf den localhost:3000 läuft sondern auf eine /api verweist und dies im index.js festgeschrieben.  
 
-**Kommen wir zum Deployen!**
+## Kommen wir zum Deployen!
 Das Deployen war eines der schwierigsten Angelegenheiten an der App! Da habe ich mir ehrlichgesagt auch etwas hilfe geholt, weil es einfach zu schwer war. Ich habe mir zuerst die App "Docker Desktop" vom Browser heruntergeladen und dann für jeden Part 3 Container erstellt. Der erste Container ist für mein Frontend, der zweite für meinen Backend und der letzte für meine Datenbank. Was wäre eine App ohne Datenbank? 
 Die jeweiligen wichtigen Elemente der Anwendung habe ich in die jeweiligen Container festgeschrieben. Die drei Container werden über "docker-compost up" gestartet. Alle Containers werden über ein Temrinal gemeinsam 'verwaltet'. 
 --
 Meine Favicon habe ich so einfach wie mögich gehalten, um mir selbst treu zu bleiben.
 
-**PS. Dass ich die App Anfang August komplett von neu Anfangen musste hat mich zuerst richtig Niedergeschmettert aber ich habe erkannt das es das Beste war, was ich machen konnte. Ich habe meine Errungenen Erkenntnisse nocheinmal verfestigen können und über meine alten Fehler nicht ein zweites mal stolpern können, was mich nur mehr bestärkt hat, dass ich das richtige getan habe!**
+***
+PS. Dass ich die App Anfang August komplett von neu Anfangen musste hat mich zuerst richtig Niedergeschmettert aber ich habe erkannt das es das Beste war, was ich machen konnte. Ich habe meine Errungenen Erkenntnisse nocheinmal verfestigen können und über meine alten Fehler nicht ein zweites mal stolpern können, was mich nur mehr bestärkt hat, dass ich das richtige getan habe!
