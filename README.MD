@@ -18,9 +18,10 @@ Nachdem ich diesen Prozess vollständig hinbekommen habe, habe ich mich mit der 
 Ich habe meinen Backend umgeschaltet, dass das Frontend nicht mehr auf den localhost:3000 läuft sondern auf eine /api verweist und dies im index.js festgeschrieben.  
 
 ## Kommen wir zum Deployen!
+
 Das Deployen war eines der schwierigsten Angelegenheiten an der App! Da habe ich mir ehrlichgesagt auch etwas hilfe geholt, weil es einfach zu schwer war. Ich habe mir zuerst die App "Docker Desktop" vom Browser heruntergeladen und dann für jeden Part 3 Container erstellt. Der erste Container ist für mein Frontend, der zweite für meinen Backend und der letzte für meine Datenbank. Was wäre eine App ohne Datenbank? 
 Die jeweiligen wichtigen Elemente der Anwendung habe ich in die jeweiligen Container festgeschrieben. Die drei Container werden über "docker-compost up" gestartet. Alle Containers werden über ein Temrinal gemeinsam 'verwaltet'. 
---
+
 Meine Favicon habe ich so einfach wie mögich gehalten, um mir selbst treu zu bleiben.
 
 ***
