@@ -1,53 +1,27 @@
-# Progressive Web Apps - Aktuelle Trends der IKT 2022
+# Poesie liebhaber aufgepasst!
+*Mit der Poesie App können Poesie liebhaber ihre eigenen Poesie Texte posten. Sie können sich aber auch ganz einfach von anderen Poesie texten inspieren lasssen!*
 
-Dieses Projekt enthält das Grundgerüst einer Webanwendung. Auf diesem Grundgerüst bauen wir auf und fügen sukzessive *progressive* Funktionalitäten hinzu, so dass am Ende eine *Progressive Web Application* entsteht. 
+Im Rahmen meines Studiums "Informatik und Wirtschaft" und das Modul "IKT - Aktuelle Trends der Informations- und Kommunikationstechnik" habe ich eine Progressive Web Application entwickelt. Mit meiner eigenen Idee zur einer Poesie App und den Vorgelegten Skripten meines Professors habe ich alle Anforderungen eindecken können und die App anschließlich Deployen können. 
 
 ## Installation
 
-- Zum Ausführen des Projektes wird [Node.js](https://nodejs.org) verendet. Sie müssen es auf Ihren Rechner installieren. 
+- Zur Ausführung des Projektes wurde [Node.js](https://nodejs.org) verendet. Die verwendung von Docker Desktop und MongoDB Compast wurde ebenfalls verwendet.
+***
 
-- In der Wahl Ihrer IDE sind Sie völlig frei. Empfehlungen finden Sie unter [https://freiheit.f4.htw-berlin.de/ikt/tools/#integrated-development-environment-ide](https://freiheit.f4.htw-berlin.de/ikt/tools/#integrated-development-environment-ide)
+## Anwendung 
 
-- Zum Starten des Projektes wechseln Sie im Terminal (Terminal Ihres Rechners oder das Terminal in der IDE) in den Projektordner (`cd IKT-PWA-01`) und führen dort 
+Die Anwendung ist eine Poesie App mit der man neue Poesie Texte hinzufügen kann oder auch löschen kann. 
+Wird die Webanwendung angeschaltet (Lokal), wird die Anwendung für jedermann mit dem jeweiligen Link `poesie.pics` sichtbar und benutzbar sein!
+Die Webseite besteht aus einer oberen sowie einer linken aufklapbaren Navbar. 
+Die Funktion Subscription "Benachrichtigung: Ein" ist sobald sie einmal angeklickt worden ist, nicht mehr zu sehen. Sobald der Installierbutton angeklickt ist, ist auch dieser nicht mehr für die Nutzer zu sehen. 
+Sobald eine Poesie gepostet werden soll, wird der Nutzer vorher gefragt, ob Sie die Berechtigung der Kamera anschalten möchte. Sobald das Zugelassen wird, kann er ein Selfie von sich machen. Nun wird der Titel des Posts eingetragen und sobald ein Standort gewählt werden soll, wird der Nutzer mit einem Pup-Up Fenster gefragt, ob der Nutzer diese Einschalten möchte. Im Anschluss kommt der jeweilige Text für den Post und mit dem Speicher Button, wird das 'Formular' ans Backend abgeschickt. Sobald der Nutzer den "Benachrichtigung Ein" Button getätigt hat, sollte nach dem Speichern des Posts ein Pop-Up Fenster bei all denen Nutzer erscheinen die Momentan auf der Seite sind. Diese Funktion wurde durch versuchiedene Subscribtion erstellt, die im Backend hinterlegt werden. Sobald jemand die Benachrichtigung einschaltet, erhählt er automatisch eine Subscription wodurch er eine Push-Notification erhält. 
+Nachdem ich diesen Prozess vollständig hinbekommen habe, habe ich mich mit der Delete funktion beschäftigt. Ich wollte, dass man die Posts löschen kann ohne das Postman benutzt wird. Nachdem der Reload von neu erworbenen Post ständig kläglich gescheitert ist habe ich mich intensive damit beschäftigt, wie es denn noch klappen könnte! Sobald ein Post gepostet wird, wird der Post nach 2 Sekunden erscheinen und die weiteren Anwender bekommen zwar ihre Push-Notifikation doch erst nach den Sekunden erhalten sie den eigentlichen Post dazu. Oder sie Klicken auf die Push-Notifikation und gelangen so zu dem neuem Post. Sobald ein Post ohne Internet gepostet wird, wird der Post im "Hintergrund" abgespeichert und erst wieder neu geladen, sobald wieder Internet vorhanden ist.
+Ich habe meinen Backend umgeschaltet, dass das Frontend nicht mehr auf den localhost:3000 läuft sondern auf eine /api verweist und dies im index.js festgeschrieben.  
 
-	`npm install` 
-
-	aus (es genügt auch `npm i`). Damit werden alle erforderlichen Abhängigkeiten installiert. Es entsteht der `node_modules`-Ordner. 
-
-- Nach erfolgreicher Installation der Abhängigkeiten, geben Sie  
-
-	`npm start` 
-
-	ein, um Ihr Projekt auszuführen (Es wird der `http-server` mit der Option `-c-1` gestartet. Diese Option disabled Caching). Klicken Sie danach auf [localhost:8080](http://localhost:8080) oder geben Sie die URL direkt in Ihren Browser ein.
-
-- Sollten Sie Änderungen an der IMplementierung vornehmen und diese ausprobieren wollen, müssen Sie den Server zunächst wieder stoppen:
-
-	`Ctrl-C`
-
-	und geben dann erneut 
-
-	`npm start` 
-
-	ein. 
-
-## Anpassungen
-
-Wir verwenden [Material Design Lite](https://getmdl.io/) für das Design unserer Anwendung. Sie können natürlich auch andere CSS-Frameworks verwenden. Sollte Ihnen die aktuelle Farbkombination aus `blue-grey` und `red` nicht zusagen, können Sie in den `index.html`-Datein (im `public`- und im `public/help`-Ordner auch eine andere Kombination auswählen (siehe
-
-`href="https://code.getmdl.io/1.3.0/material.blue_grey-red.min.css"`
-
-Andere Farbkombinationen finden Sie [hier](https://getmdl.io/customize/#cdn-code). Es genügt auch, die entsprechenden Farben in den Dateinamen einzutragen 
-
-`material.{primary}-{accent}.min.css` 
-
-(z.B. `material.indigo-pink.min.css`).
-
+**Kommen wir zum Deployen!**
+Das Deployen war eines der schwierigsten Angelegenheiten an der App! Da habe ich mir ehrlichgesagt auch etwas hilfe geholt, weil es einfach zu schwer war. Ich habe mir zuerst die App "Docker Desktop" vom Browser heruntergeladen und dann für jeden Part 3 Container erstellt. Der erste Container ist für mein Frontend, der zweite für meinen Backend und der letzte für meine Datenbank. Was wäre eine App ohne Datenbank? 
+Die jeweiligen wichtigen Elemente der Anwendung habe ich in die jeweiligen Container festgeschrieben. Die drei Container werden über "docker-compost up" gestartet. Alle Containers werden über ein Temrinal gemeinsam 'verwaltet'. 
 --
+Meine Favicon habe ich so einfach wie mögich gehalten, um mir selbst treu zu bleiben.
 
-Sie können natürlich auch ein anderes Bild als das HTW-Bild einbinden. Beachten Sie dabei nur, dass wir mithilfe responsiven Verhaltens drei verschiedene Bilder davon benötigen, idealerweise mit den Pixel-Maßen `1200 x 457` (`*-lg.jpg`), `900 x 343` (`*.jpg`) und `480 x 183` (`*-sm.jpg`). Siehe dann die `public/index.html`.
-
---
-
-Binden Sie ruhig Ihr eigenes `favicon.ico` in den Projektordner ein. Erstellen können Sie sich ein solches `favicon` z.B. [hier](https://favicon.io/) oder [hier](https://www.ionos.de/tools/favicon-generator). Macht Spaß und gibt allen Ihren Webanwendungen eine persönliche Note ;-).
-
- 
+**PS. Dass ich die App Anfang August komplett von neu Anfangen musste hat mich zuerst richtig Niedergeschmettert aber ich habe erkannt das es das Beste war, was ich machen konnte. Ich habe meine Errungenen Erkenntnisse nocheinmal verfestigen können und über meine alten Fehler nicht ein zweites mal stolpern können, was mich nur mehr bestärkt hat, dass ich das richtige getan habe!**
